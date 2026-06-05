@@ -208,11 +208,11 @@ footer{margin-top:48px;padding-top:22px;border-top:1px solid var(--border);font-
   <table>
     <thead><tr><th>Phase</th><th>Window</th><th>Ship</th></tr></thead>
     <tbody>
-      <tr class="now"><td><b>1 · Python + SQL runway</b></td><td><span class="pm">Jun 22 – Jul 5</span></td><td>Python+SQL tool on GitHub</td></tr>
-      <tr><td><b>· July throttle</b></td><td><span class="pm">Jul 6 – 31</span></td><td>Course 4 + NC150 habit</td></tr>
-      <tr><td><b>2 · Algorithms</b></td><td><span class="pm">Aug – Oct</span></td><td>Full NC150 done</td></tr>
-      <tr><td><b>3 · Systems &amp; design</b></td><td><span class="pm">Nov – early Jan</span></td><td>SD + OOD interview ready</td></tr>
-      <tr><td><b>4 · Build &amp; ship</b></td><td><span class="pm">Jan – Feb</span></td><td>Deployed full-stack app</td></tr>
+      <tr data-tr="runway"><td><b>1 · Python + SQL runway</b></td><td><span class="pm">Jun 22 – Jul 5</span></td><td>Python+SQL tool on GitHub</td></tr>
+      <tr data-tr="throttle"><td><b>· July throttle</b></td><td><span class="pm">Jul 6 – 31</span></td><td>Course 4 + NC150 habit</td></tr>
+      <tr data-tr="phase2"><td><b>2 · Algorithms</b></td><td><span class="pm">Aug – Oct</span></td><td>Full NC150 done</td></tr>
+      <tr data-tr="phase3"><td><b>3 · Systems &amp; design</b></td><td><span class="pm">Nov – early Jan</span></td><td>SD + OOD interview ready</td></tr>
+      <tr data-tr="phase4"><td><b>4 · Build &amp; ship</b></td><td><span class="pm">Jan – Feb</span></td><td>Deployed full-stack app</td></tr>
     </tbody>
   </table>
 
@@ -920,6 +920,10 @@ function initSections(){
     // auto-expand current, collapse rest
     if(id===active) sec.classList.add('open');
     else sec.classList.remove('open');
+  });
+  // highlight the matching row in the overview table
+  document.querySelectorAll('tr[data-tr]').forEach(tr=>{
+    tr.classList.toggle('now', tr.dataset.tr===active);
   });
 }
 
