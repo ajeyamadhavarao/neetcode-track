@@ -10,8 +10,8 @@
 <style>
 :root{
   --bg:#FBFBFA;--text:#37352F;--text-2:#605C54;--text-3:#9B9A93;
-  --border:#ECEBE8;--border-2:#DDDCD7;
-  --accent:#2D6A4F;--accent-soft:#EAF2EE;
+  --border:#ECEBE8;--border-2:#DDDCD7;--hover:#F3F2F0;
+  --accent:#2D6A4F;--accent-soft:#EAF2EE;--accent-line:#CDE3D8;
   --lec:#8A857B;--lec-soft:#F1F0ED;
   --red:#C0392B;
   --f:'Hanken Grotesk',-apple-system,sans-serif;
@@ -20,7 +20,7 @@
 *{box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 body{margin:0;background:var(--bg);color:var(--text);font-family:var(--f);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;}
-.page{max-width:760px;margin:0 auto;padding:60px 26px 130px;animation:fade .45s ease;}
+.page{max-width:780px;margin:0 auto;padding:60px 26px 130px;animation:fade .45s ease;}
 @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 a{color:var(--accent);}
 
@@ -55,6 +55,14 @@ hr{border:none;border-top:1px solid var(--border);margin:40px 0;}
 .task .tx b{font-weight:600;}
 .course-tag{font-family:var(--m);font-size:10px;color:#fff;background:var(--accent);border-radius:4px;padding:1px 6px;margin-left:7px;letter-spacing:.03em;white-space:nowrap;}
 
+/* ── problem tasks ── */
+.task.prob .tx{font-size:13.5px;}
+.task.prob{padding:2px 0;}
+.lc{font-family:var(--m);font-size:10px;color:var(--text-3);border:1px solid var(--border);border-radius:4px;padding:1px 5px;margin-left:6px;text-decoration:none;letter-spacing:.02em;vertical-align:middle;display:inline-block;}
+.lc:hover{border-color:var(--accent);color:var(--accent);}
+.prob-day{margin:4px 0 12px;}
+.prob-day-lbl{font-family:var(--m);font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;padding-bottom:4px;border-bottom:1px solid var(--border);margin-bottom:5px;}
+
 .ship{font-family:var(--m);font-size:13px;color:var(--accent);margin:11px 0 4px;display:flex;gap:8px;align-items:baseline;}
 .ship .x{flex:0 0 auto;}
 
@@ -76,12 +84,34 @@ th{font-family:var(--m);font-size:11px;text-transform:uppercase;letter-spacing:.
 td .pm{font-family:var(--m);font-size:12px;color:var(--text-3);}td b{font-weight:600;}
 tr.now td{background:var(--accent-soft);}
 
+/* ── Collapsible phase sections ── */
+.phase-sec{margin-top:0;}
+.phase-hdr{
+  display:flex;align-items:center;gap:10px;
+  cursor:pointer;padding:18px 0 12px;
+  border-top:1px solid var(--border);
+  margin-top:28px;user-select:none;
+}
+.phase-hdr:hover .ph-title{opacity:.8;}
+.phase-hdr .ph-title{flex:1;font-size:22px;font-weight:600;letter-spacing:-.01em;display:flex;align-items:baseline;gap:10px;}
+.phase-hdr .ph-title .num{font-family:var(--m);font-size:14px;color:var(--accent);font-weight:500;}
+.phase-hdr-r{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.pstt{font-family:var(--m);font-size:9px;text-transform:uppercase;letter-spacing:.1em;padding:2px 8px;border-radius:20px;font-weight:600;}
+.pstt.active{background:var(--accent-soft);color:var(--accent);}
+.pstt.upcoming{background:var(--hover);color:var(--text-3);}
+.pstt.done{background:#E8F5E9;color:#388E3C;}
+.psum{font-family:var(--m);font-size:11px;color:var(--text-3);}
+.pchv{font-family:var(--m);font-size:13px;color:var(--text-3);transition:transform .2s;}
+.phase-sec.open .pchv{transform:rotate(180deg);}
+.phase-body{display:none;}
+.phase-sec.open .phase-body{display:block;}
+
 footer{margin-top:48px;padding-top:22px;border-top:1px solid var(--border);font-family:var(--m);font-size:12px;color:var(--text-3);line-height:1.7;}
 .ftr-btns{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;}
 .ftr-btn{font-family:var(--m);font-size:11.5px;color:var(--text-3);background:none;border:1px solid var(--border);border-radius:6px;padding:5px 13px;cursor:pointer;transition:.12s;}
 .ftr-btn:hover{border-color:var(--border-2);color:var(--text-2);}
 
-/* ── PIN GATE ─────────────────────────────────── */
+/* ── PIN GATE ── */
 #gate{position:fixed;inset:0;z-index:9000;background:var(--bg);display:flex;align-items:center;justify-content:center;}
 #gate-box{width:100%;max-width:280px;text-align:center;padding:0 24px;}
 .gate-icon{font-size:38px;margin-bottom:12px;}
@@ -96,7 +126,7 @@ footer{margin-top:48px;padding-top:22px;border-top:1px solid var(--border);font-
 .rem-label{display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;font-family:var(--m);font-size:12px;color:var(--text-3);user-select:none;}
 .rem-label input{cursor:pointer;accent-color:var(--accent);}
 
-/* ── CHANGE PIN MODAL ─────────────────────────── */
+/* ── CHANGE PIN MODAL ── */
 #chpin-ov{position:fixed;inset:0;z-index:8000;background:rgba(251,251,250,.9);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;}
 #chpin-ov.hidden{display:none;}
 #chpin-box{background:#fff;border:1px solid var(--border-2);border-radius:14px;padding:28px 26px;width:100%;max-width:290px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,.07);}
@@ -111,8 +141,8 @@ footer{margin-top:48px;padding-top:22px;border-top:1px solid var(--border);font-
 #chpin-err{font-family:var(--m);font-size:11.5px;color:var(--red);min-height:18px;margin-top:8px;}
 #chpin-ok{font-family:var(--m);font-size:11.5px;color:var(--accent);min-height:18px;margin-top:4px;}
 
-@media(max-width:620px){.page{padding:40px 20px 90px;}h1{font-size:30px;}.meta{font-size:11.5px;}}
-@media print{body{background:#fff;}tr.now td,.blk.lec,.blk.app{background:#f4f4f2;}.blk{break-inside:avoid;}#gate,#chpin-ov,.ph-prog,.ftr-btns{display:none!important;}.page{display:block!important;}}
+@media(max-width:620px){.page{padding:40px 20px 90px;}h1{font-size:30px;}.meta{font-size:11.5px;}.phase-hdr .ph-title{font-size:18px;}}
+@media print{body{background:#fff;}tr.now td,.blk.lec,.blk.app{background:#f4f4f2;}.blk{break-inside:avoid;}#gate,#chpin-ov,.ph-prog,.ftr-btns{display:none!important;}.page{display:block!important;}.phase-body{display:block!important;}}
 </style>
 </head>
 <body>
@@ -150,27 +180,27 @@ footer{margin-top:48px;padding-top:22px;border-top:1px solid var(--border);font-
 <div class="page" id="main" style="display:none">
 
   <div class="icon">💻</div>
-  <h1>NeetCode Track — Execution Plan</h1>
-  <p class="subtitle">Speed-run Python + SQL before the job. Then alternate: one week of lectures, one week of application — across all 11 courses + NeetCode 150.</p>
+  <h1>NeetCode Track</h1>
+  <p class="subtitle">Speed-run Python + SQL before the job. Then alternate: one week of lectures, one week of application — 11 courses + NeetCode 150.</p>
   <div class="meta">
     <span>START · JUN 22</span><span>·</span>
     <span>11 COURSES</span><span>·</span>
-    <span>SQL-HEAVY JOB · JUL 6</span><span>·</span>
+    <span>JOB · JUL 6</span><span>·</span>
     <span>DONE ~EARLY 2027</span>
   </div>
 
-  <!-- RHYTHM -->
+  <!-- RHYTHM — always visible -->
   <h2><span class="num">→</span> The rhythm</h2>
   <div class="blk">
     <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx"><b>Runway (Jun 22–Jul 5):</b> full days — speed-run Python + SQL so you start the job with both fresh.</span></label>
     <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx"><b>July:</b> throttle while you onboard — light course + start NeetCode 150.</span></label>
-    <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx"><b>August onward:</b> alternate — one <b>LECTURE</b> week (watch the course chunk), one <b>APPLICATION</b> week (NC150 problems + build / tools).</span></label>
+    <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx"><b>August onward:</b> alternate — one <b>LECTURE</b> week (course chunk), one <b>APPLICATION</b> week (NC150 + build).</span></label>
     <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx"><b>Rule:</b> code everything yourself first — ask AI to explain, never to write the answer.</span></label>
   </div>
   <p class="win" style="margin-top:8px;">~10–12 hrs/week once the job starts. Dates flex; SQL gets reinforced daily at work.</p>
 
-  <!-- OVERVIEW -->
-  <h2><span class="num">≡</span> Phases &amp; progress</h2>
+  <!-- OVERVIEW — always visible -->
+  <h2><span class="num">≡</span> Course progress</h2>
   <div class="prog">
     <div class="bar"><div class="fill" id="cfill"></div></div>
     <div class="lbl" id="clbl">0 / 11 courses done</div>
@@ -178,169 +208,539 @@ footer{margin-top:48px;padding-top:22px;border-top:1px solid var(--border);font-
   <table>
     <thead><tr><th>Phase</th><th>Window</th><th>Ship</th></tr></thead>
     <tbody>
-      <tr class="now"><td><b>1 · Speed-run Python + SQL</b></td><td><span class="pm">Jun 22 – Jul 5</span></td><td>A Python+SQL tool</td></tr>
-      <tr><td><b>· July throttle</b></td><td><span class="pm">Jul 6 – 31</span></td><td>Coding-interview Python + NC150 begun</td></tr>
-      <tr><td><b>2 · Algorithms (lec/app)</b></td><td><span class="pm">Aug – Oct</span></td><td>Full NC150 done</td></tr>
-      <tr><td><b>3 · Systems &amp; design (lec/app)</b></td><td><span class="pm">Nov – early Jan</span></td><td>SD + OOD ready</td></tr>
-      <tr><td><b>4 · Build &amp; ship (lec/app)</b></td><td><span class="pm">Jan – Feb</span></td><td>A deployed app</td></tr>
+      <tr class="now"><td><b>1 · Python + SQL runway</b></td><td><span class="pm">Jun 22 – Jul 5</span></td><td>Python+SQL tool on GitHub</td></tr>
+      <tr><td><b>· July throttle</b></td><td><span class="pm">Jul 6 – 31</span></td><td>Course 4 + NC150 habit</td></tr>
+      <tr><td><b>2 · Algorithms</b></td><td><span class="pm">Aug – Oct</span></td><td>Full NC150 done</td></tr>
+      <tr><td><b>3 · Systems &amp; design</b></td><td><span class="pm">Nov – early Jan</span></td><td>SD + OOD interview ready</td></tr>
+      <tr><td><b>4 · Build &amp; ship</b></td><td><span class="pm">Jan – Feb</span></td><td>Deployed full-stack app</td></tr>
     </tbody>
   </table>
 
   <hr>
 
-  <!-- ── PHASE 1: RUNWAY ───────────────────────────────────────────────────── -->
-  <h2 id="p1"><span class="num">01</span> Speed-run Python + SQL</h2>
-  <p class="win">Jun 22 – Jul 5 · pre-job runway, full days · ~4–5 hrs/day · all AI-free</p>
-  <div data-phase="runway">
-    <div class="ph-prog"><div class="bar"><div class="fill ph-fill"></div></div><div class="lbl ph-lbl"></div></div>
+  <!-- ══════════════════════════════════════════════════════════════════════
+       PHASE 1 — RUNWAY
+  ═══════════════════════════════════════════════════════════════════════ -->
+  <div class="phase-sec" data-sec="runway">
+    <div class="phase-hdr" onclick="toggleSec('runway')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')toggleSec('runway')">
+      <div class="ph-title"><span class="num">01</span> Speed-run Python + SQL</div>
+      <div class="phase-hdr-r">
+        <span class="pstt" id="st-runway"></span>
+        <span class="psum" id="sm-runway"></span>
+        <span class="pchv" id="cv-runway">▾</span>
+      </div>
+    </div>
+    <div class="phase-body" id="pb-runway">
+      <p class="win">Jun 22 – Jul 5 · pre-job runway, full days · ~4–5 hrs/day · no AI for solutions</p>
+      <div data-phase="runway">
+        <div class="ph-prog"><div class="bar"><div class="fill ph-fill"></div></div><div class="lbl ph-lbl"></div></div>
 
-    <div class="dlabel" style="font-family:var(--m);font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-3);margin:4px 0 8px;">Week 1 · Python (move fast — you're rusty, not new)</div>
-    <div class="blk now"><div class="dlabel"><span class="dm">JUN 22 · MON</span></div>
-      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Install Python + editor; make a NeetCode account</span></label>
-      <label class="task course"><input type="checkbox"><span class="cb"></span><span class="tx">Python for Beginners: basics → conditionals, loops<span class="course-tag">COURSE 1/11</span></span></label></div>
-    <div class="blk"><div class="dlabel"><span class="dm">JUN 23 · TUE</span></div>
-      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Python for Beginners: lists, dicts, sets, functions, comprehensions — finish</span></label></div>
-    <div class="blk"><div class="dlabel"><span class="dm">JUN 24 · WED</span></div>
-      <label class="task course"><input type="checkbox"><span class="cb"></span><span class="tx">Python OOP: classes, objects, methods, inheritance<span class="course-tag">COURSE 2/11</span></span></label></div>
-    <div class="blk"><div class="dlabel"><span class="dm">JUN 25 · THU</span></div>
-      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Python OOP: polymorphism, dunder methods, properties — finish</span></label></div>
-    <div class="blk"><div class="dlabel"><span class="dm">JUN 26 · FRI</span></div>
-      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Consolidate: build a small multi-file Python program (no AI)</span></label></div>
-    <div class="blk"><div class="dlabel"><span class="dm">JUN 27–28 · WKND</span></div>
-      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Catch up / rest</span></label></div>
+        <div class="dlabel" style="font-family:var(--m);font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-3);margin:4px 0 8px;">Week 1 · Python (move fast — you're rusty, not new)</div>
+        <div class="blk now"><div class="dlabel"><span class="dm">JUN 22 · MON</span></div>
+          <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Install Python + editor; make a NeetCode account</span></label>
+          <label class="task course"><input type="checkbox"><span class="cb"></span><span class="tx">Python for Beginners: basics → conditionals, loops<span class="course-tag">COURSE 1/11</span></span></label></div>
+        <div class="blk"><div class="dlabel"><span class="dm">JUN 23 · TUE</span></div>
+          <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Python for Beginners: lists, dicts, sets, functions, comprehensions — finish</span></label></div>
+        <div class="blk"><div class="dlabel"><span class="dm">JUN 24 · WED</span></div>
+          <label class="task course"><input type="checkbox"><span class="cb"></span><span class="tx">Python OOP: classes, objects, methods, inheritance<span class="course-tag">COURSE 2/11</span></span></label></div>
+        <div class="blk"><div class="dlabel"><span class="dm">JUN 25 · THU</span></div>
+          <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Python OOP: polymorphism, dunder methods, properties — finish</span></label></div>
+        <div class="blk"><div class="dlabel"><span class="dm">JUN 26 · FRI</span></div>
+          <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Consolidate: build a small multi-file Python program (no AI)</span></label></div>
+        <div class="blk"><div class="dlabel"><span class="dm">JUN 27–28 · WKND</span></div>
+          <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Catch up / rest</span></label></div>
 
-    <div class="dlabel" style="font-family:var(--m);font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-3);margin:24px 0 8px;">Week 2 · SQL → ship a Python+SQL tool</div>
-    <div class="blk"><div class="dlabel"><span class="dm">JUN 29 · MON</span></div>
-      <label class="task course"><input type="checkbox"><span class="cb"></span><span class="tx">SQL for Beginners: SELECT, WHERE, ORDER BY<span class="course-tag">COURSE 3/11</span></span></label></div>
-    <div class="blk"><div class="dlabel"><span class="dm">JUN 30 · TUE</span></div>
-      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">SQL for Beginners: JOINs, GROUP BY, aggregations</span></label></div>
-    <div class="blk"><div class="dlabel"><span class="dm">JUL 01 · WED</span></div>
-      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">SQL for Beginners: subqueries, indexes — finish</span></label></div>
-    <div class="blk"><div class="dlabel"><span class="dm">JUL 02 · THU</span></div>
-      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Build day 1: load your spending CSV into a database, query it from Python, print summaries</span></label></div>
-    <div class="blk"><div class="dlabel"><span class="dm">JUL 03 · FRI</span></div>
-      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Build day 2: finish features + README</span></label></div>
-    <div class="blk"><div class="dlabel"><span class="dm">JUL 04 · SAT</span></div>
-      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Push to GitHub; ship</span></label></div>
-    <div class="blk"><div class="dlabel"><span class="dm">JUL 05 · SUN</span></div>
-      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Litmus: a few SQL queries + a Python class from memory. Rest before day one.</span></label></div>
-    <div class="ship"><span class="x">✅</span><span><b>Ship —</b> a Python + SQL tool on GitHub. Courses 1–3 done; you start the job with SQL fresh.</span></div>
+        <div class="dlabel" style="font-family:var(--m);font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-3);margin:24px 0 8px;">Week 2 · SQL → ship a Python+SQL tool</div>
+        <div class="blk"><div class="dlabel"><span class="dm">JUN 29 · MON</span></div>
+          <label class="task course"><input type="checkbox"><span class="cb"></span><span class="tx">SQL for Beginners: SELECT, WHERE, ORDER BY<span class="course-tag">COURSE 3/11</span></span></label></div>
+        <div class="blk"><div class="dlabel"><span class="dm">JUN 30 · TUE</span></div>
+          <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">SQL for Beginners: JOINs, GROUP BY, aggregations</span></label></div>
+        <div class="blk"><div class="dlabel"><span class="dm">JUL 01 · WED</span></div>
+          <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">SQL for Beginners: subqueries, indexes — finish</span></label></div>
+        <div class="blk"><div class="dlabel"><span class="dm">JUL 02 · THU</span></div>
+          <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Build day 1: load a CSV into SQLite, query it from Python, print summaries</span></label></div>
+        <div class="blk"><div class="dlabel"><span class="dm">JUL 03 · FRI</span></div>
+          <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Build day 2: finish features + README</span></label></div>
+        <div class="blk"><div class="dlabel"><span class="dm">JUL 04 · SAT</span></div>
+          <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Push to GitHub; ship</span></label></div>
+        <div class="blk"><div class="dlabel"><span class="dm">JUL 05 · SUN</span></div>
+          <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Litmus: write 5 SQL queries + a Python class from memory. Rest before day one.</span></label></div>
+        <div class="ship"><span class="x">✅</span><span><b>Ship —</b> Python + SQL tool on GitHub. Courses 1–3 done.</span></div>
+      </div>
+    </div>
   </div>
 
-  <!-- ── JULY THROTTLE ─────────────────────────────────────────────────────── -->
-  <h2><span class="num">··</span> July throttle</h2>
-  <p class="win">Jul 6 – 31 · onboarding is priority · ~3–4 hrs/week</p>
-  <div data-phase="throttle">
-    <div class="ph-prog"><div class="bar"><div class="fill ph-fill"></div></div><div class="lbl ph-lbl"></div></div>
-    <div class="blk"><div class="dlabel"><span class="dm">WEEK OF JUL 6</span></div>
-      <label class="task course"><input type="checkbox"><span class="cb"></span><span class="tx">Start Python for Coding Interviews (~30 min/eve)<span class="course-tag">COURSE 4/11</span></span></label>
-      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">NC150: Arrays &amp; Hashing — 3 problems</span></label></div>
-    <div class="blk"><div class="dlabel"><span class="dm">WEEK OF JUL 13</span></div>
-      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Finish Python for Coding Interviews</span></label>
-      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">NC150: Two Pointers — 3 problems</span></label></div>
-    <div class="blk"><div class="dlabel"><span class="dm">WEEK OF JUL 20–31</span></div>
-      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">A few more NC150 easy; settle into the job. No pressure.</span></label></div>
-    <div class="ship"><span class="x">✅</span><span><b>Ship —</b> Course 4 done; NC150 underway.</span></div>
+  <!-- ══════════════════════════════════════════════════════════════════════
+       JULY THROTTLE
+  ═══════════════════════════════════════════════════════════════════════ -->
+  <div class="phase-sec" data-sec="throttle">
+    <div class="phase-hdr" onclick="toggleSec('throttle')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')toggleSec('throttle')">
+      <div class="ph-title"><span class="num">··</span> July throttle</div>
+      <div class="phase-hdr-r">
+        <span class="pstt" id="st-throttle"></span>
+        <span class="psum" id="sm-throttle"></span>
+        <span class="pchv" id="cv-throttle">▾</span>
+      </div>
+    </div>
+    <div class="phase-body" id="pb-throttle">
+      <p class="win">Jul 6 – 31 · onboarding is priority · ~3–4 hrs/week · dipping toes in NC150</p>
+      <div data-phase="throttle">
+        <div class="ph-prog"><div class="bar"><div class="fill ph-fill"></div></div><div class="lbl ph-lbl"></div></div>
+
+        <div class="blk"><div class="dlabel"><span class="dm">WEEK OF JUL 6</span></div>
+          <label class="task course"><input type="checkbox"><span class="cb"></span><span class="tx">Start Python for Coding Interviews (~30 min/eve)<span class="course-tag">COURSE 4/11</span></span></label>
+          <div class="prob-day">
+            <div class="prob-day-lbl">NC150 first 3 — Arrays &amp; Hashing</div>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Contains Duplicate <a class="lc" href="https://leetcode.com/problems/contains-duplicate/" target="_blank" onclick="event.stopPropagation()">#217</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Valid Anagram <a class="lc" href="https://leetcode.com/problems/valid-anagram/" target="_blank" onclick="event.stopPropagation()">#242</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Two Sum <a class="lc" href="https://leetcode.com/problems/two-sum/" target="_blank" onclick="event.stopPropagation()">#1</a></span></label>
+          </div>
+        </div>
+
+        <div class="blk"><div class="dlabel"><span class="dm">WEEK OF JUL 13</span></div>
+          <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Finish Python for Coding Interviews</span></label>
+          <div class="prob-day">
+            <div class="prob-day-lbl">NC150 first 3 — Two Pointers</div>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Valid Palindrome <a class="lc" href="https://leetcode.com/problems/valid-palindrome/" target="_blank" onclick="event.stopPropagation()">#125</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Two Sum II — Input Array Is Sorted <a class="lc" href="https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/" target="_blank" onclick="event.stopPropagation()">#167</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">3Sum <a class="lc" href="https://leetcode.com/problems/3sum/" target="_blank" onclick="event.stopPropagation()">#15</a></span></label>
+          </div>
+        </div>
+
+        <div class="blk"><div class="dlabel"><span class="dm">WEEK OF JUL 20–31</span></div>
+          <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">A few more NC150 easy (your choice); settle into the job. No pressure.</span></label></div>
+        <div class="ship"><span class="x">✅</span><span><b>Ship —</b> Course 4 done; NC150 habit seeded.</span></div>
+      </div>
+    </div>
   </div>
 
-  <!-- ── PHASE 2: ALGORITHMS ───────────────────────────────────────────────── -->
-  <h2><span class="num">02</span> Algorithms · lecture / application</h2>
-  <p class="win">Aug – Oct · 12 weeks · Courses: DSA for Beginners (25h) + Advanced Algorithms (25h)</p>
-  <div data-phase="phase2">
-    <div class="ph-prog"><div class="bar"><div class="fill ph-fill"></div></div><div class="lbl ph-lbl"></div></div>
+  <!-- ══════════════════════════════════════════════════════════════════════
+       PHASE 2 — ALGORITHMS
+  ═══════════════════════════════════════════════════════════════════════ -->
+  <div class="phase-sec" data-sec="phase2">
+    <div class="phase-hdr" onclick="toggleSec('phase2')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')toggleSec('phase2')">
+      <div class="ph-title"><span class="num">02</span> Algorithms · lec / apply</div>
+      <div class="phase-hdr-r">
+        <span class="pstt" id="st-phase2"></span>
+        <span class="psum" id="sm-phase2"></span>
+        <span class="pchv" id="cv-phase2">▾</span>
+      </div>
+    </div>
+    <div class="phase-body" id="pb-phase2">
+      <p class="win">Aug – Oct · 12 weeks · DSA for Beginners (25h) + Advanced Algorithms (25h) + full NC150</p>
+      <div data-phase="phase2">
+        <div class="ph-prog"><div class="bar"><div class="fill ph-fill"></div></div><div class="lbl ph-lbl"></div></div>
 
-    <div class="blk lec"><div class="dlabel"><span class="dm">WK 1</span><span class="wtag lec">Lecture</span></div>
-      <label class="task course"><input type="checkbox"><span class="cb"></span><span class="tx">DSA Beginners: Arrays/Hashing, Two Pointers, Sliding Window, Stack<span class="course-tag">COURSE 5/11</span></span></label></div>
-    <div class="blk app"><div class="dlabel"><span class="dm">WK 2</span><span class="wtag app">Apply</span></div>
-      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">NC150: arrays/hashing, two pointers, sliding window, stack</span></label>
-      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Sat: a small tool/script using what you learned</span></label></div>
+        <!-- WK 1 -->
+        <div class="blk lec"><div class="dlabel"><span class="dm">WK 1 · Aug 1–7</span><span class="wtag lec">Lecture</span></div>
+          <label class="task course"><input type="checkbox"><span class="cb"></span><span class="tx">DSA for Beginners: Arrays &amp; Hashing, Two Pointers, Sliding Window, Stack<span class="course-tag">COURSE 5/11</span></span></label></div>
 
-    <div class="blk lec"><div class="dlabel"><span class="dm">WK 3</span><span class="wtag lec">Lecture</span></div>
-      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">DSA Beginners: Binary Search, Linked Lists, Trees</span></label></div>
-    <div class="blk app"><div class="dlabel"><span class="dm">WK 4</span><span class="wtag app">Apply</span></div>
-      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">NC150: binary search, linked list, trees</span></label></div>
+        <!-- WK 2 -->
+        <div class="blk app"><div class="dlabel"><span class="dm">WK 2 · Aug 8–14</span><span class="wtag app">Apply</span></div>
+          <div class="prob-day">
+            <div class="prob-day-lbl">MON — Arrays &amp; Hashing (1)</div>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Contains Duplicate <a class="lc" href="https://leetcode.com/problems/contains-duplicate/" target="_blank" onclick="event.stopPropagation()">#217</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Valid Anagram <a class="lc" href="https://leetcode.com/problems/valid-anagram/" target="_blank" onclick="event.stopPropagation()">#242</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Two Sum <a class="lc" href="https://leetcode.com/problems/two-sum/" target="_blank" onclick="event.stopPropagation()">#1</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Group Anagrams <a class="lc" href="https://leetcode.com/problems/group-anagrams/" target="_blank" onclick="event.stopPropagation()">#49</a></span></label>
+          </div>
+          <div class="prob-day">
+            <div class="prob-day-lbl">TUE — Arrays &amp; Hashing (2)</div>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Top K Frequent Elements <a class="lc" href="https://leetcode.com/problems/top-k-frequent-elements/" target="_blank" onclick="event.stopPropagation()">#347</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Encode and Decode Strings <a class="lc" href="https://leetcode.com/problems/encode-and-decode-strings/" target="_blank" onclick="event.stopPropagation()">#271</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Product of Array Except Self <a class="lc" href="https://leetcode.com/problems/product-of-array-except-self/" target="_blank" onclick="event.stopPropagation()">#238</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Valid Sudoku <a class="lc" href="https://leetcode.com/problems/valid-sudoku/" target="_blank" onclick="event.stopPropagation()">#36</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Longest Consecutive Sequence <a class="lc" href="https://leetcode.com/problems/longest-consecutive-sequence/" target="_blank" onclick="event.stopPropagation()">#128</a></span></label>
+          </div>
+          <div class="prob-day">
+            <div class="prob-day-lbl">WED — Two Pointers</div>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Valid Palindrome <a class="lc" href="https://leetcode.com/problems/valid-palindrome/" target="_blank" onclick="event.stopPropagation()">#125</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Two Sum II — Input Array Is Sorted <a class="lc" href="https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/" target="_blank" onclick="event.stopPropagation()">#167</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">3Sum <a class="lc" href="https://leetcode.com/problems/3sum/" target="_blank" onclick="event.stopPropagation()">#15</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Container With Most Water <a class="lc" href="https://leetcode.com/problems/container-with-most-water/" target="_blank" onclick="event.stopPropagation()">#11</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Trapping Rain Water <a class="lc" href="https://leetcode.com/problems/trapping-rain-water/" target="_blank" onclick="event.stopPropagation()">#42</a></span></label>
+          </div>
+          <div class="prob-day">
+            <div class="prob-day-lbl">THU — Sliding Window (1)</div>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Best Time to Buy and Sell Stock <a class="lc" href="https://leetcode.com/problems/best-time-to-buy-and-sell-stock/" target="_blank" onclick="event.stopPropagation()">#121</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Longest Substring Without Repeating Characters <a class="lc" href="https://leetcode.com/problems/longest-substring-without-repeating-characters/" target="_blank" onclick="event.stopPropagation()">#3</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Longest Repeating Character Replacement <a class="lc" href="https://leetcode.com/problems/longest-repeating-character-replacement/" target="_blank" onclick="event.stopPropagation()">#424</a></span></label>
+          </div>
+          <div class="prob-day">
+            <div class="prob-day-lbl">FRI — Sliding Window (2)</div>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Permutation in String <a class="lc" href="https://leetcode.com/problems/permutation-in-string/" target="_blank" onclick="event.stopPropagation()">#567</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Minimum Window Substring <a class="lc" href="https://leetcode.com/problems/minimum-window-substring/" target="_blank" onclick="event.stopPropagation()">#76</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Sliding Window Maximum <a class="lc" href="https://leetcode.com/problems/sliding-window-maximum/" target="_blank" onclick="event.stopPropagation()">#239</a></span></label>
+          </div>
+          <div class="prob-day">
+            <div class="prob-day-lbl">SAT — Stack (1) + build</div>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Valid Parentheses <a class="lc" href="https://leetcode.com/problems/valid-parentheses/" target="_blank" onclick="event.stopPropagation()">#20</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Min Stack <a class="lc" href="https://leetcode.com/problems/min-stack/" target="_blank" onclick="event.stopPropagation()">#155</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Evaluate Reverse Polish Notation <a class="lc" href="https://leetcode.com/problems/evaluate-reverse-polish-notation/" target="_blank" onclick="event.stopPropagation()">#150</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Generate Parentheses <a class="lc" href="https://leetcode.com/problems/generate-parentheses/" target="_blank" onclick="event.stopPropagation()">#22</a></span></label>
+            <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Build a small script using any of this week's patterns</span></label>
+          </div>
+          <div class="prob-day">
+            <div class="prob-day-lbl">SUN — Stack (2)</div>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Daily Temperatures <a class="lc" href="https://leetcode.com/problems/daily-temperatures/" target="_blank" onclick="event.stopPropagation()">#739</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Car Fleet <a class="lc" href="https://leetcode.com/problems/car-fleet/" target="_blank" onclick="event.stopPropagation()">#853</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Largest Rectangle in Histogram <a class="lc" href="https://leetcode.com/problems/largest-rectangle-in-histogram/" target="_blank" onclick="event.stopPropagation()">#84</a></span></label>
+          </div>
+        </div>
 
-    <div class="blk lec"><div class="dlabel"><span class="dm">WK 5</span><span class="wtag lec">Lecture</span></div>
-      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">DSA Beginners: Recursion, Backtracking, Heap, Tries — finish<span class="course-tag">COURSE 5 done</span></span></label></div>
-    <div class="blk app"><div class="dlabel"><span class="dm">WK 6</span><span class="wtag app">Apply</span></div>
-      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">NC150: backtracking, heap, tries; review weak spots</span></label></div>
+        <!-- WK 3 -->
+        <div class="blk lec"><div class="dlabel"><span class="dm">WK 3 · Aug 15–21</span><span class="wtag lec">Lecture</span></div>
+          <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">DSA for Beginners: Binary Search, Linked Lists, Trees</span></label></div>
 
-    <div class="blk lec"><div class="dlabel"><span class="dm">WK 7</span><span class="wtag lec">Lecture</span></div>
-      <label class="task course"><input type="checkbox"><span class="cb"></span><span class="tx">Advanced Algorithms: Graphs, Advanced Graphs<span class="course-tag">COURSE 6/11</span></span></label></div>
-    <div class="blk app"><div class="dlabel"><span class="dm">WK 8</span><span class="wtag app">Apply</span></div>
-      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">NC150: graphs, advanced graphs</span></label></div>
+        <!-- WK 4 -->
+        <div class="blk app"><div class="dlabel"><span class="dm">WK 4 · Aug 22–28</span><span class="wtag app">Apply</span></div>
+          <div class="prob-day">
+            <div class="prob-day-lbl">MON — Binary Search</div>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Binary Search <a class="lc" href="https://leetcode.com/problems/binary-search/" target="_blank" onclick="event.stopPropagation()">#704</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Search a 2D Matrix <a class="lc" href="https://leetcode.com/problems/search-a-2d-matrix/" target="_blank" onclick="event.stopPropagation()">#74</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Koko Eating Bananas <a class="lc" href="https://leetcode.com/problems/koko-eating-bananas/" target="_blank" onclick="event.stopPropagation()">#875</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Find Minimum in Rotated Sorted Array <a class="lc" href="https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/" target="_blank" onclick="event.stopPropagation()">#153</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Search in Rotated Sorted Array <a class="lc" href="https://leetcode.com/problems/search-in-rotated-sorted-array/" target="_blank" onclick="event.stopPropagation()">#33</a></span></label>
+          </div>
+          <div class="prob-day">
+            <div class="prob-day-lbl">TUE — Binary Search (hard) + Linked List (1)</div>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Time Based Key-Value Store <a class="lc" href="https://leetcode.com/problems/time-based-key-value-store/" target="_blank" onclick="event.stopPropagation()">#981</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Median of Two Sorted Arrays <a class="lc" href="https://leetcode.com/problems/median-of-two-sorted-arrays/" target="_blank" onclick="event.stopPropagation()">#4</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Reverse Linked List <a class="lc" href="https://leetcode.com/problems/reverse-linked-list/" target="_blank" onclick="event.stopPropagation()">#206</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Merge Two Sorted Lists <a class="lc" href="https://leetcode.com/problems/merge-two-sorted-lists/" target="_blank" onclick="event.stopPropagation()">#21</a></span></label>
+          </div>
+          <div class="prob-day">
+            <div class="prob-day-lbl">WED — Linked List (2)</div>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Reorder List <a class="lc" href="https://leetcode.com/problems/reorder-list/" target="_blank" onclick="event.stopPropagation()">#143</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Remove Nth Node From End of List <a class="lc" href="https://leetcode.com/problems/remove-nth-node-from-end-of-list/" target="_blank" onclick="event.stopPropagation()">#19</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Copy List With Random Pointer <a class="lc" href="https://leetcode.com/problems/copy-list-with-random-pointer/" target="_blank" onclick="event.stopPropagation()">#138</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Add Two Numbers <a class="lc" href="https://leetcode.com/problems/add-two-numbers/" target="_blank" onclick="event.stopPropagation()">#2</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Linked List Cycle <a class="lc" href="https://leetcode.com/problems/linked-list-cycle/" target="_blank" onclick="event.stopPropagation()">#141</a></span></label>
+          </div>
+          <div class="prob-day">
+            <div class="prob-day-lbl">THU — Linked List (hard)</div>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Find the Duplicate Number <a class="lc" href="https://leetcode.com/problems/find-the-duplicate-number/" target="_blank" onclick="event.stopPropagation()">#287</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">LRU Cache <a class="lc" href="https://leetcode.com/problems/lru-cache/" target="_blank" onclick="event.stopPropagation()">#146</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Merge K Sorted Lists <a class="lc" href="https://leetcode.com/problems/merge-k-sorted-lists/" target="_blank" onclick="event.stopPropagation()">#23</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Reverse Nodes in K-Group <a class="lc" href="https://leetcode.com/problems/reverse-nodes-in-k-group/" target="_blank" onclick="event.stopPropagation()">#25</a></span></label>
+          </div>
+          <div class="prob-day">
+            <div class="prob-day-lbl">FRI — Trees (easy)</div>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Invert Binary Tree <a class="lc" href="https://leetcode.com/problems/invert-binary-tree/" target="_blank" onclick="event.stopPropagation()">#226</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Maximum Depth of Binary Tree <a class="lc" href="https://leetcode.com/problems/maximum-depth-of-binary-tree/" target="_blank" onclick="event.stopPropagation()">#104</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Diameter of Binary Tree <a class="lc" href="https://leetcode.com/problems/diameter-of-binary-tree/" target="_blank" onclick="event.stopPropagation()">#543</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Balanced Binary Tree <a class="lc" href="https://leetcode.com/problems/balanced-binary-tree/" target="_blank" onclick="event.stopPropagation()">#110</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Same Tree <a class="lc" href="https://leetcode.com/problems/same-tree/" target="_blank" onclick="event.stopPropagation()">#100</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Subtree of Another Tree <a class="lc" href="https://leetcode.com/problems/subtree-of-another-tree/" target="_blank" onclick="event.stopPropagation()">#572</a></span></label>
+          </div>
+          <div class="prob-day">
+            <div class="prob-day-lbl">SAT — Trees (medium)</div>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Lowest Common Ancestor of a BST <a class="lc" href="https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/" target="_blank" onclick="event.stopPropagation()">#235</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Binary Tree Level Order Traversal <a class="lc" href="https://leetcode.com/problems/binary-tree-level-order-traversal/" target="_blank" onclick="event.stopPropagation()">#102</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Binary Tree Right Side View <a class="lc" href="https://leetcode.com/problems/binary-tree-right-side-view/" target="_blank" onclick="event.stopPropagation()">#199</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Count Good Nodes in Binary Tree <a class="lc" href="https://leetcode.com/problems/count-good-nodes-in-binary-tree/" target="_blank" onclick="event.stopPropagation()">#1448</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Validate Binary Search Tree <a class="lc" href="https://leetcode.com/problems/validate-binary-search-tree/" target="_blank" onclick="event.stopPropagation()">#98</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Kth Smallest Element in a BST <a class="lc" href="https://leetcode.com/problems/kth-smallest-element-in-a-bst/" target="_blank" onclick="event.stopPropagation()">#230</a></span></label>
+          </div>
+          <div class="prob-day">
+            <div class="prob-day-lbl">SUN — Trees (hard)</div>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Construct Binary Tree from Preorder and Inorder Traversal <a class="lc" href="https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/" target="_blank" onclick="event.stopPropagation()">#105</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Binary Tree Maximum Path Sum <a class="lc" href="https://leetcode.com/problems/binary-tree-maximum-path-sum/" target="_blank" onclick="event.stopPropagation()">#124</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Serialize and Deserialize Binary Tree <a class="lc" href="https://leetcode.com/problems/serialize-and-deserialize-binary-tree/" target="_blank" onclick="event.stopPropagation()">#297</a></span></label>
+          </div>
+        </div>
 
-    <div class="blk lec"><div class="dlabel"><span class="dm">WK 9</span><span class="wtag lec">Lecture</span></div>
-      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Advanced Algorithms: 1-D DP, 2-D DP</span></label></div>
-    <div class="blk app"><div class="dlabel"><span class="dm">WK 10</span><span class="wtag app">Apply</span></div>
-      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">NC150: 1-D DP, 2-D DP</span></label></div>
+        <!-- WK 5 -->
+        <div class="blk lec"><div class="dlabel"><span class="dm">WK 5 · Aug 29–Sep 4</span><span class="wtag lec">Lecture</span></div>
+          <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">DSA for Beginners: Recursion, Backtracking, Heap, Tries — finish<span class="course-tag">COURSE 5 done</span></span></label></div>
 
-    <div class="blk lec"><div class="dlabel"><span class="dm">WK 11</span><span class="wtag lec">Lecture</span></div>
-      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Advanced Algorithms: Greedy, Intervals, Math, Bit — finish<span class="course-tag">COURSE 6 done</span></span></label></div>
-    <div class="blk app"><div class="dlabel"><span class="dm">WK 12</span><span class="wtag app">Apply</span></div>
-      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">NC150: greedy, intervals, math, bit → full list done; 2–3 timed mocks</span></label></div>
-    <div class="ship"><span class="x">✅</span><span><b>Ship —</b> Courses 5–6 done; full NeetCode 150 complete.</span></div>
+        <!-- WK 6 -->
+        <div class="blk app"><div class="dlabel"><span class="dm">WK 6 · Sep 5–11</span><span class="wtag app">Apply</span></div>
+          <div class="prob-day">
+            <div class="prob-day-lbl">MON — Backtracking (1)</div>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Subsets <a class="lc" href="https://leetcode.com/problems/subsets/" target="_blank" onclick="event.stopPropagation()">#78</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Combination Sum <a class="lc" href="https://leetcode.com/problems/combination-sum/" target="_blank" onclick="event.stopPropagation()">#39</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Permutations <a class="lc" href="https://leetcode.com/problems/permutations/" target="_blank" onclick="event.stopPropagation()">#46</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Subsets II <a class="lc" href="https://leetcode.com/problems/subsets-ii/" target="_blank" onclick="event.stopPropagation()">#90</a></span></label>
+          </div>
+          <div class="prob-day">
+            <div class="prob-day-lbl">TUE — Backtracking (2)</div>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Combination Sum II <a class="lc" href="https://leetcode.com/problems/combination-sum-ii/" target="_blank" onclick="event.stopPropagation()">#40</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Word Search <a class="lc" href="https://leetcode.com/problems/word-search/" target="_blank" onclick="event.stopPropagation()">#79</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Palindrome Partitioning <a class="lc" href="https://leetcode.com/problems/palindrome-partitioning/" target="_blank" onclick="event.stopPropagation()">#131</a></span></label>
+          </div>
+          <div class="prob-day">
+            <div class="prob-day-lbl">WED — Backtracking (hard) + Heap (1)</div>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Letter Combinations of a Phone Number <a class="lc" href="https://leetcode.com/problems/letter-combinations-of-a-phone-number/" target="_blank" onclick="event.stopPropagation()">#17</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">N-Queens <a class="lc" href="https://leetcode.com/problems/n-queens/" target="_blank" onclick="event.stopPropagation()">#51</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Kth Largest Element in a Stream <a class="lc" href="https://leetcode.com/problems/kth-largest-element-in-a-stream/" target="_blank" onclick="event.stopPropagation()">#703</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Last Stone Weight <a class="lc" href="https://leetcode.com/problems/last-stone-weight/" target="_blank" onclick="event.stopPropagation()">#1046</a></span></label>
+          </div>
+          <div class="prob-day">
+            <div class="prob-day-lbl">THU — Heap (2)</div>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">K Closest Points to Origin <a class="lc" href="https://leetcode.com/problems/k-closest-points-to-origin/" target="_blank" onclick="event.stopPropagation()">#973</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Kth Largest Element in an Array <a class="lc" href="https://leetcode.com/problems/kth-largest-element-in-an-array/" target="_blank" onclick="event.stopPropagation()">#215</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Task Scheduler <a class="lc" href="https://leetcode.com/problems/task-scheduler/" target="_blank" onclick="event.stopPropagation()">#621</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Design Twitter <a class="lc" href="https://leetcode.com/problems/design-twitter/" target="_blank" onclick="event.stopPropagation()">#355</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Find Median from Data Stream <a class="lc" href="https://leetcode.com/problems/find-median-from-data-stream/" target="_blank" onclick="event.stopPropagation()">#295</a></span></label>
+          </div>
+          <div class="prob-day">
+            <div class="prob-day-lbl">FRI — Tries</div>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Implement Trie (Prefix Tree) <a class="lc" href="https://leetcode.com/problems/implement-trie-prefix-tree/" target="_blank" onclick="event.stopPropagation()">#208</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Design Add and Search Words Data Structure <a class="lc" href="https://leetcode.com/problems/design-add-and-search-words-data-structure/" target="_blank" onclick="event.stopPropagation()">#211</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Word Search II <a class="lc" href="https://leetcode.com/problems/word-search-ii/" target="_blank" onclick="event.stopPropagation()">#212</a></span></label>
+          </div>
+          <div class="prob-day">
+            <div class="prob-day-lbl">SAT–SUN — Review</div>
+            <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Redo any 3 problems that felt shaky this week</span></label>
+          </div>
+        </div>
+
+        <!-- WK 7 -->
+        <div class="blk lec"><div class="dlabel"><span class="dm">WK 7 · Sep 12–18</span><span class="wtag lec">Lecture</span></div>
+          <label class="task course"><input type="checkbox"><span class="cb"></span><span class="tx">Advanced Algorithms: Graphs, Advanced Graphs<span class="course-tag">COURSE 6/11</span></span></label></div>
+
+        <!-- WK 8 -->
+        <div class="blk app"><div class="dlabel"><span class="dm">WK 8 · Sep 19–25</span><span class="wtag app">Apply</span></div>
+          <div class="prob-day">
+            <div class="prob-day-lbl">MON — Graphs BFS/DFS (1)</div>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Number of Islands <a class="lc" href="https://leetcode.com/problems/number-of-islands/" target="_blank" onclick="event.stopPropagation()">#200</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Clone Graph <a class="lc" href="https://leetcode.com/problems/clone-graph/" target="_blank" onclick="event.stopPropagation()">#133</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Max Area of Island <a class="lc" href="https://leetcode.com/problems/max-area-of-island/" target="_blank" onclick="event.stopPropagation()">#695</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Pacific Atlantic Water Flow <a class="lc" href="https://leetcode.com/problems/pacific-atlantic-water-flow/" target="_blank" onclick="event.stopPropagation()">#417</a></span></label>
+          </div>
+          <div class="prob-day">
+            <div class="prob-day-lbl">TUE — Graphs BFS/DFS (2)</div>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Surrounded Regions <a class="lc" href="https://leetcode.com/problems/surrounded-regions/" target="_blank" onclick="event.stopPropagation()">#130</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Rotting Oranges <a class="lc" href="https://leetcode.com/problems/rotting-oranges/" target="_blank" onclick="event.stopPropagation()">#994</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Walls and Gates <a class="lc" href="https://leetcode.com/problems/walls-and-gates/" target="_blank" onclick="event.stopPropagation()">#286</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Course Schedule <a class="lc" href="https://leetcode.com/problems/course-schedule/" target="_blank" onclick="event.stopPropagation()">#207</a></span></label>
+          </div>
+          <div class="prob-day">
+            <div class="prob-day-lbl">WED — Graphs Union Find</div>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Course Schedule II <a class="lc" href="https://leetcode.com/problems/course-schedule-ii/" target="_blank" onclick="event.stopPropagation()">#210</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Redundant Connection <a class="lc" href="https://leetcode.com/problems/redundant-connection/" target="_blank" onclick="event.stopPropagation()">#684</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Number of Connected Components in an Undirected Graph <a class="lc" href="https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/" target="_blank" onclick="event.stopPropagation()">#323</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Graph Valid Tree <a class="lc" href="https://leetcode.com/problems/graph-valid-tree/" target="_blank" onclick="event.stopPropagation()">#261</a></span></label>
+          </div>
+          <div class="prob-day">
+            <div class="prob-day-lbl">THU — Graphs hard + Advanced start</div>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Word Ladder <a class="lc" href="https://leetcode.com/problems/word-ladder/" target="_blank" onclick="event.stopPropagation()">#127</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Reconstruct Itinerary <a class="lc" href="https://leetcode.com/problems/reconstruct-itinerary/" target="_blank" onclick="event.stopPropagation()">#332</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Min Cost to Connect All Points <a class="lc" href="https://leetcode.com/problems/min-cost-to-connect-all-points/" target="_blank" onclick="event.stopPropagation()">#1584</a></span></label>
+          </div>
+          <div class="prob-day">
+            <div class="prob-day-lbl">FRI — Advanced Graphs</div>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Network Delay Time <a class="lc" href="https://leetcode.com/problems/network-delay-time/" target="_blank" onclick="event.stopPropagation()">#743</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Swim in Rising Water <a class="lc" href="https://leetcode.com/problems/swim-in-rising-water/" target="_blank" onclick="event.stopPropagation()">#778</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Alien Dictionary <a class="lc" href="https://leetcode.com/problems/alien-dictionary/" target="_blank" onclick="event.stopPropagation()">#269</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Cheapest Flights Within K Stops <a class="lc" href="https://leetcode.com/problems/cheapest-flights-within-k-stops/" target="_blank" onclick="event.stopPropagation()">#787</a></span></label>
+          </div>
+          <div class="prob-day">
+            <div class="prob-day-lbl">SAT–SUN — Review</div>
+            <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Redo any graph problem where DFS/BFS wasn't instinctive</span></label>
+          </div>
+        </div>
+
+        <!-- WK 9 -->
+        <div class="blk lec"><div class="dlabel"><span class="dm">WK 9 · Sep 26–Oct 2</span><span class="wtag lec">Lecture</span></div>
+          <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Advanced Algorithms: 1-D DP, 2-D DP</span></label></div>
+
+        <!-- WK 10 -->
+        <div class="blk app"><div class="dlabel"><span class="dm">WK 10 · Oct 3–9</span><span class="wtag app">Apply</span></div>
+          <div class="prob-day">
+            <div class="prob-day-lbl">MON — 1-D DP (easy)</div>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Climbing Stairs <a class="lc" href="https://leetcode.com/problems/climbing-stairs/" target="_blank" onclick="event.stopPropagation()">#70</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Min Cost Climbing Stairs <a class="lc" href="https://leetcode.com/problems/min-cost-climbing-stairs/" target="_blank" onclick="event.stopPropagation()">#746</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">House Robber <a class="lc" href="https://leetcode.com/problems/house-robber/" target="_blank" onclick="event.stopPropagation()">#198</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">House Robber II <a class="lc" href="https://leetcode.com/problems/house-robber-ii/" target="_blank" onclick="event.stopPropagation()">#213</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Longest Palindromic Substring <a class="lc" href="https://leetcode.com/problems/longest-palindromic-substring/" target="_blank" onclick="event.stopPropagation()">#5</a></span></label>
+          </div>
+          <div class="prob-day">
+            <div class="prob-day-lbl">TUE — 1-D DP (medium)</div>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Palindromic Substrings <a class="lc" href="https://leetcode.com/problems/palindromic-substrings/" target="_blank" onclick="event.stopPropagation()">#647</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Decode Ways <a class="lc" href="https://leetcode.com/problems/decode-ways/" target="_blank" onclick="event.stopPropagation()">#91</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Coin Change <a class="lc" href="https://leetcode.com/problems/coin-change/" target="_blank" onclick="event.stopPropagation()">#322</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Maximum Product Subarray <a class="lc" href="https://leetcode.com/problems/maximum-product-subarray/" target="_blank" onclick="event.stopPropagation()">#152</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Word Break <a class="lc" href="https://leetcode.com/problems/word-break/" target="_blank" onclick="event.stopPropagation()">#139</a></span></label>
+          </div>
+          <div class="prob-day">
+            <div class="prob-day-lbl">WED — 1-D DP (hard) + 2-D start</div>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Longest Increasing Subsequence <a class="lc" href="https://leetcode.com/problems/longest-increasing-subsequence/" target="_blank" onclick="event.stopPropagation()">#300</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Partition Equal Subset Sum <a class="lc" href="https://leetcode.com/problems/partition-equal-subset-sum/" target="_blank" onclick="event.stopPropagation()">#416</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Unique Paths <a class="lc" href="https://leetcode.com/problems/unique-paths/" target="_blank" onclick="event.stopPropagation()">#62</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Longest Common Subsequence <a class="lc" href="https://leetcode.com/problems/longest-common-subsequence/" target="_blank" onclick="event.stopPropagation()">#1143</a></span></label>
+          </div>
+          <div class="prob-day">
+            <div class="prob-day-lbl">THU — 2-D DP (medium)</div>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Best Time to Buy and Sell Stock with Cooldown <a class="lc" href="https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/" target="_blank" onclick="event.stopPropagation()">#309</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Coin Change II <a class="lc" href="https://leetcode.com/problems/coin-change-ii/" target="_blank" onclick="event.stopPropagation()">#518</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Target Sum <a class="lc" href="https://leetcode.com/problems/target-sum/" target="_blank" onclick="event.stopPropagation()">#494</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Interleaving String <a class="lc" href="https://leetcode.com/problems/interleaving-string/" target="_blank" onclick="event.stopPropagation()">#97</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Longest Increasing Path in a Matrix <a class="lc" href="https://leetcode.com/problems/longest-increasing-path-in-a-matrix/" target="_blank" onclick="event.stopPropagation()">#329</a></span></label>
+          </div>
+          <div class="prob-day">
+            <div class="prob-day-lbl">FRI — 2-D DP (hard)</div>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Distinct Subsequences <a class="lc" href="https://leetcode.com/problems/distinct-subsequences/" target="_blank" onclick="event.stopPropagation()">#115</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Edit Distance <a class="lc" href="https://leetcode.com/problems/edit-distance/" target="_blank" onclick="event.stopPropagation()">#72</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Burst Balloons <a class="lc" href="https://leetcode.com/problems/burst-balloons/" target="_blank" onclick="event.stopPropagation()">#312</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Regular Expression Matching <a class="lc" href="https://leetcode.com/problems/regular-expression-matching/" target="_blank" onclick="event.stopPropagation()">#10</a></span></label>
+          </div>
+          <div class="prob-day">
+            <div class="prob-day-lbl">SAT–SUN — Review</div>
+            <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Pick 3 DP problems you couldn't get on first try and redo from scratch</span></label>
+          </div>
+        </div>
+
+        <!-- WK 11 -->
+        <div class="blk lec"><div class="dlabel"><span class="dm">WK 11 · Oct 10–16</span><span class="wtag lec">Lecture</span></div>
+          <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Advanced Algorithms: Greedy, Intervals, Math &amp; Geometry, Bit Manipulation — finish<span class="course-tag">COURSE 6 done</span></span></label></div>
+
+        <!-- WK 12 -->
+        <div class="blk app"><div class="dlabel"><span class="dm">WK 12 · Oct 17–23</span><span class="wtag app">Apply</span></div>
+          <div class="prob-day">
+            <div class="prob-day-lbl">MON — Greedy</div>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Maximum Subarray <a class="lc" href="https://leetcode.com/problems/maximum-subarray/" target="_blank" onclick="event.stopPropagation()">#53</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Jump Game <a class="lc" href="https://leetcode.com/problems/jump-game/" target="_blank" onclick="event.stopPropagation()">#55</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Jump Game II <a class="lc" href="https://leetcode.com/problems/jump-game-ii/" target="_blank" onclick="event.stopPropagation()">#45</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Gas Station <a class="lc" href="https://leetcode.com/problems/gas-station/" target="_blank" onclick="event.stopPropagation()">#134</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Hand of Straights <a class="lc" href="https://leetcode.com/problems/hand-of-straights/" target="_blank" onclick="event.stopPropagation()">#846</a></span></label>
+          </div>
+          <div class="prob-day">
+            <div class="prob-day-lbl">TUE — Greedy (cont.) + Intervals</div>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Merge Triplets to Form Target Triplet <a class="lc" href="https://leetcode.com/problems/merge-triplets-to-form-target-triplet/" target="_blank" onclick="event.stopPropagation()">#1899</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Partition Labels <a class="lc" href="https://leetcode.com/problems/partition-labels/" target="_blank" onclick="event.stopPropagation()">#763</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Valid Parenthesis String <a class="lc" href="https://leetcode.com/problems/valid-parenthesis-string/" target="_blank" onclick="event.stopPropagation()">#678</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Insert Interval <a class="lc" href="https://leetcode.com/problems/insert-interval/" target="_blank" onclick="event.stopPropagation()">#57</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Merge Intervals <a class="lc" href="https://leetcode.com/problems/merge-intervals/" target="_blank" onclick="event.stopPropagation()">#56</a></span></label>
+          </div>
+          <div class="prob-day">
+            <div class="prob-day-lbl">WED — Intervals (cont.)</div>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Non-overlapping Intervals <a class="lc" href="https://leetcode.com/problems/non-overlapping-intervals/" target="_blank" onclick="event.stopPropagation()">#435</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Meeting Rooms <a class="lc" href="https://leetcode.com/problems/meeting-rooms/" target="_blank" onclick="event.stopPropagation()">#252</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Meeting Rooms II <a class="lc" href="https://leetcode.com/problems/meeting-rooms-ii/" target="_blank" onclick="event.stopPropagation()">#253</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Minimum Interval to Include Each Query <a class="lc" href="https://leetcode.com/problems/minimum-interval-to-include-each-query/" target="_blank" onclick="event.stopPropagation()">#1851</a></span></label>
+          </div>
+          <div class="prob-day">
+            <div class="prob-day-lbl">THU — Math &amp; Geometry</div>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Rotate Image <a class="lc" href="https://leetcode.com/problems/rotate-image/" target="_blank" onclick="event.stopPropagation()">#48</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Spiral Matrix <a class="lc" href="https://leetcode.com/problems/spiral-matrix/" target="_blank" onclick="event.stopPropagation()">#54</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Set Matrix Zeroes <a class="lc" href="https://leetcode.com/problems/set-matrix-zeroes/" target="_blank" onclick="event.stopPropagation()">#73</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Happy Number <a class="lc" href="https://leetcode.com/problems/happy-number/" target="_blank" onclick="event.stopPropagation()">#202</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Plus One <a class="lc" href="https://leetcode.com/problems/plus-one/" target="_blank" onclick="event.stopPropagation()">#66</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Pow(x, n) <a class="lc" href="https://leetcode.com/problems/powx-n/" target="_blank" onclick="event.stopPropagation()">#50</a></span></label>
+          </div>
+          <div class="prob-day">
+            <div class="prob-day-lbl">FRI — Math (cont.) + Bit Manipulation (1)</div>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Multiply Strings <a class="lc" href="https://leetcode.com/problems/multiply-strings/" target="_blank" onclick="event.stopPropagation()">#43</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Detect Squares <a class="lc" href="https://leetcode.com/problems/detect-squares/" target="_blank" onclick="event.stopPropagation()">#2013</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Single Number <a class="lc" href="https://leetcode.com/problems/single-number/" target="_blank" onclick="event.stopPropagation()">#136</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Number of 1 Bits <a class="lc" href="https://leetcode.com/problems/number-of-1-bits/" target="_blank" onclick="event.stopPropagation()">#191</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Counting Bits <a class="lc" href="https://leetcode.com/problems/counting-bits/" target="_blank" onclick="event.stopPropagation()">#338</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Reverse Bits <a class="lc" href="https://leetcode.com/problems/reverse-bits/" target="_blank" onclick="event.stopPropagation()">#190</a></span></label>
+          </div>
+          <div class="prob-day">
+            <div class="prob-day-lbl">SAT — Bit Manipulation (2) + Timed Mock 1</div>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Missing Number <a class="lc" href="https://leetcode.com/problems/missing-number/" target="_blank" onclick="event.stopPropagation()">#268</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Sum of Two Integers <a class="lc" href="https://leetcode.com/problems/sum-of-two-integers/" target="_blank" onclick="event.stopPropagation()">#371</a></span></label>
+            <label class="task prob"><input type="checkbox"><span class="cb"></span><span class="tx">Reverse Integer <a class="lc" href="https://leetcode.com/problems/reverse-integer/" target="_blank" onclick="event.stopPropagation()">#7</a></span></label>
+            <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx"><b>Timed Mock 1</b> — 75 min, 2 medium problems, no hints</span></label>
+          </div>
+          <div class="prob-day">
+            <div class="prob-day-lbl">SUN — Timed Mock 2</div>
+            <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx"><b>Timed Mock 2</b> — review results, identify weak topics</span></label>
+          </div>
+        </div>
+        <div class="ship"><span class="x">✅</span><span><b>Ship —</b> Courses 5–6 done; all 150 NC problems complete.</span></div>
+      </div>
+    </div>
   </div>
 
-  <!-- ── PHASE 3: SYSTEMS & DESIGN ────────────────────────────────────────── -->
-  <h2><span class="num">03</span> Systems &amp; design · lecture / application</h2>
-  <p class="win">Nov – early Jan · 10 weeks · the interview rounds beyond coding</p>
-  <div data-phase="phase3">
-    <div class="ph-prog"><div class="bar"><div class="fill ph-fill"></div></div><div class="lbl ph-lbl"></div></div>
+  <!-- ══════════════════════════════════════════════════════════════════════
+       PHASE 3 — SYSTEMS & DESIGN
+  ═══════════════════════════════════════════════════════════════════════ -->
+  <div class="phase-sec" data-sec="phase3">
+    <div class="phase-hdr" onclick="toggleSec('phase3')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')toggleSec('phase3')">
+      <div class="ph-title"><span class="num">03</span> Systems &amp; design · lec / apply</div>
+      <div class="phase-hdr-r">
+        <span class="pstt" id="st-phase3"></span>
+        <span class="psum" id="sm-phase3"></span>
+        <span class="pchv" id="cv-phase3">▾</span>
+      </div>
+    </div>
+    <div class="phase-body" id="pb-phase3">
+      <p class="win">Nov – early Jan · 10 weeks · the interview rounds beyond coding</p>
+      <div data-phase="phase3">
+        <div class="ph-prog"><div class="bar"><div class="fill ph-fill"></div></div><div class="lbl ph-lbl"></div></div>
 
-    <div class="blk lec"><div class="dlabel"><span class="dm">WK 1</span><span class="wtag lec">Lecture</span></div>
-      <label class="task course"><input type="checkbox"><span class="cb"></span><span class="tx">System Design for Beginners: scaling, caching, load balancing, CDNs<span class="course-tag">COURSE 7/11</span></span></label></div>
-    <div class="blk app"><div class="dlabel"><span class="dm">WK 2</span><span class="wtag app">Apply</span></div>
-      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Sketch each pattern + tradeoffs; relate them to systems you touch at work</span></label></div>
+        <div class="blk lec"><div class="dlabel"><span class="dm">WK 1</span><span class="wtag lec">Lecture</span></div>
+          <label class="task course"><input type="checkbox"><span class="cb"></span><span class="tx">System Design for Beginners: scaling, caching, load balancing, CDNs<span class="course-tag">COURSE 7/11</span></span></label></div>
+        <div class="blk app"><div class="dlabel"><span class="dm">WK 2</span><span class="wtag app">Apply</span></div>
+          <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Sketch each pattern + tradeoffs; relate them to systems you use at work</span></label></div>
 
-    <div class="blk lec"><div class="dlabel"><span class="dm">WK 3</span><span class="wtag lec">Lecture</span></div>
-      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">System Design for Beginners: databases, replication, sharding — finish<span class="course-tag">COURSE 7 done</span></span></label>
-      <label class="task course"><input type="checkbox"><span class="cb"></span><span class="tx">Start System Design Interview<span class="course-tag">COURSE 8/11</span></span></label></div>
-    <div class="blk app"><div class="dlabel"><span class="dm">WK 4</span><span class="wtag app">Apply</span></div>
-      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Work 2–3 SD interview questions (URL shortener, rate limiter)</span></label></div>
+        <div class="blk lec"><div class="dlabel"><span class="dm">WK 3</span><span class="wtag lec">Lecture</span></div>
+          <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">System Design for Beginners: databases, replication, sharding — finish<span class="course-tag">COURSE 7 done</span></span></label>
+          <label class="task course"><input type="checkbox"><span class="cb"></span><span class="tx">Start System Design Interview<span class="course-tag">COURSE 8/11</span></span></label></div>
+        <div class="blk app"><div class="dlabel"><span class="dm">WK 4</span><span class="wtag app">Apply</span></div>
+          <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Work through 2–3 SD questions: URL shortener, rate limiter</span></label></div>
 
-    <div class="blk lec"><div class="dlabel"><span class="dm">WK 5</span><span class="wtag lec">Lecture</span></div>
-      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">System Design Interview: finish (Twitter, news feed, etc.)<span class="course-tag">COURSE 8 done</span></span></label></div>
-    <div class="blk app"><div class="dlabel"><span class="dm">WK 6</span><span class="wtag app">Apply</span></div>
-      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">2–3 full mock designs, end to end (whiteboard or doc)</span></label></div>
+        <div class="blk lec"><div class="dlabel"><span class="dm">WK 5</span><span class="wtag lec">Lecture</span></div>
+          <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">System Design Interview: finish (Twitter, news feed, etc.)<span class="course-tag">COURSE 8 done</span></span></label></div>
+        <div class="blk app"><div class="dlabel"><span class="dm">WK 6</span><span class="wtag app">Apply</span></div>
+          <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">2–3 full mock designs end to end (whiteboard or doc)</span></label></div>
 
-    <div class="blk lec"><div class="dlabel"><span class="dm">WK 7</span><span class="wtag lec">Lecture</span></div>
-      <label class="task course"><input type="checkbox"><span class="cb"></span><span class="tx">Object Oriented Design Interviews (LLD)<span class="course-tag">COURSE 9/11</span></span></label></div>
-    <div class="blk app"><div class="dlabel"><span class="dm">WK 8</span><span class="wtag app">Apply</span></div>
-      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Implement 2 LLD problems in code (parking lot, elevator, etc.)</span></label></div>
+        <div class="blk lec"><div class="dlabel"><span class="dm">WK 7</span><span class="wtag lec">Lecture</span></div>
+          <label class="task course"><input type="checkbox"><span class="cb"></span><span class="tx">Object Oriented Design Interviews (LLD)<span class="course-tag">COURSE 9/11</span></span></label></div>
+        <div class="blk app"><div class="dlabel"><span class="dm">WK 8</span><span class="wtag app">Apply</span></div>
+          <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Implement 2 LLD problems in code (parking lot, elevator)</span></label></div>
 
-    <div class="blk lec"><div class="dlabel"><span class="dm">WK 9</span><span class="wtag lec">Lecture</span></div>
-      <label class="task course"><input type="checkbox"><span class="cb"></span><span class="tx">Object Oriented Design Patterns<span class="course-tag">COURSE 10/11</span></span></label></div>
-    <div class="blk app"><div class="dlabel"><span class="dm">WK 10</span><span class="wtag app">Apply</span></div>
-      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Implement 4–5 patterns in code (factory, singleton, observer, strategy, adapter)</span></label></div>
-    <div class="ship"><span class="x">✅</span><span><b>Ship —</b> Courses 7–10 done; system-design + OOD interview ready.</span></div>
+        <div class="blk lec"><div class="dlabel"><span class="dm">WK 9</span><span class="wtag lec">Lecture</span></div>
+          <label class="task course"><input type="checkbox"><span class="cb"></span><span class="tx">Object Oriented Design Patterns<span class="course-tag">COURSE 10/11</span></span></label></div>
+        <div class="blk app"><div class="dlabel"><span class="dm">WK 10</span><span class="wtag app">Apply</span></div>
+          <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Implement 4–5 patterns in code (factory, singleton, observer, strategy, adapter)</span></label></div>
+        <div class="ship"><span class="x">✅</span><span><b>Ship —</b> Courses 7–10 done; SD + OOD interview ready.</span></div>
+      </div>
+    </div>
   </div>
 
-  <!-- ── PHASE 4: BUILD & SHIP ─────────────────────────────────────────────── -->
-  <h2><span class="num">04</span> Build &amp; ship · lecture / application</h2>
-  <p class="win">Jan – Feb · 6 weeks · Course: Full Stack Development (20h)</p>
-  <div data-phase="phase4">
-    <div class="ph-prog"><div class="bar"><div class="fill ph-fill"></div></div><div class="lbl ph-lbl"></div></div>
+  <!-- ══════════════════════════════════════════════════════════════════════
+       PHASE 4 — BUILD & SHIP
+  ═══════════════════════════════════════════════════════════════════════ -->
+  <div class="phase-sec" data-sec="phase4">
+    <div class="phase-hdr" onclick="toggleSec('phase4')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')toggleSec('phase4')">
+      <div class="ph-title"><span class="num">04</span> Build &amp; ship · lec / apply</div>
+      <div class="phase-hdr-r">
+        <span class="pstt" id="st-phase4"></span>
+        <span class="psum" id="sm-phase4"></span>
+        <span class="pchv" id="cv-phase4">▾</span>
+      </div>
+    </div>
+    <div class="phase-body" id="pb-phase4">
+      <p class="win">Jan – Feb · 6 weeks · Full Stack Development (20h)</p>
+      <div data-phase="phase4">
+        <div class="ph-prog"><div class="bar"><div class="fill ph-fill"></div></div><div class="lbl ph-lbl"></div></div>
 
-    <div class="blk lec"><div class="dlabel"><span class="dm">WK 1</span><span class="wtag lec">Lecture</span></div>
-      <label class="task course"><input type="checkbox"><span class="cb"></span><span class="tx">Full Stack Development: frontend, components, routing<span class="course-tag">COURSE 11/11</span></span></label></div>
-    <div class="blk app"><div class="dlabel"><span class="dm">WK 2</span><span class="wtag app">Apply</span></div>
-      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Build your app's frontend</span></label></div>
+        <div class="blk lec"><div class="dlabel"><span class="dm">WK 1</span><span class="wtag lec">Lecture</span></div>
+          <label class="task course"><input type="checkbox"><span class="cb"></span><span class="tx">Full Stack Development: frontend, components, routing<span class="course-tag">COURSE 11/11</span></span></label></div>
+        <div class="blk app"><div class="dlabel"><span class="dm">WK 2</span><span class="wtag app">Apply</span></div>
+          <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Build your app's frontend</span></label></div>
 
-    <div class="blk lec"><div class="dlabel"><span class="dm">WK 3</span><span class="wtag lec">Lecture</span></div>
-      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Full Stack Development: backend, auth, database (uses your SQL)</span></label></div>
-    <div class="blk app"><div class="dlabel"><span class="dm">WK 4</span><span class="wtag app">Apply</span></div>
-      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Build the backend + wire the database</span></label></div>
+        <div class="blk lec"><div class="dlabel"><span class="dm">WK 3</span><span class="wtag lec">Lecture</span></div>
+          <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Full Stack Development: backend, auth, database (uses your SQL)</span></label></div>
+        <div class="blk app"><div class="dlabel"><span class="dm">WK 4</span><span class="wtag app">Apply</span></div>
+          <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Build the backend + wire the database</span></label></div>
 
-    <div class="blk lec"><div class="dlabel"><span class="dm">WK 5</span><span class="wtag lec">Lecture</span></div>
-      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Full Stack Development: deployment — finish<span class="course-tag">COURSE 11 done</span></span></label></div>
-    <div class="blk app"><div class="dlabel"><span class="dm">WK 6</span><span class="wtag app">Apply</span></div>
-      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Deploy + polish + README; clean up GitHub; 2 mock interviews</span></label></div>
-    <div class="ship"><span class="x">✅</span><span><b>Ship —</b> Course 11 done; a deployed full-stack app. Interview-ready.</span></div>
+        <div class="blk lec"><div class="dlabel"><span class="dm">WK 5</span><span class="wtag lec">Lecture</span></div>
+          <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Full Stack Development: deployment — finish<span class="course-tag">COURSE 11 done</span></span></label></div>
+        <div class="blk app"><div class="dlabel"><span class="dm">WK 6</span><span class="wtag app">Apply</span></div>
+          <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Deploy + polish + README; clean up GitHub; 2 mock interviews</span></label></div>
+        <div class="ship"><span class="x">✅</span><span><b>Ship —</b> Course 11 done; deployed full-stack app. Interview-ready.</span></div>
+      </div>
+    </div>
   </div>
 
   <footer>
-    All 11 courses come with one NeetCode Pro subscription. &nbsp;·&nbsp; Lecture weeks consume; application weeks produce. &nbsp;·&nbsp; Progress is saved in this browser.
+    All 11 courses — one NeetCode Pro subscription. &nbsp;·&nbsp; Lecture weeks consume; apply weeks produce. &nbsp;·&nbsp; Progress is saved in this browser.
     <div class="ftr-btns">
       <button class="ftr-btn" onclick="lockNow()">🔒 Lock</button>
       <button class="ftr-btn" onclick="showChangePin()">⚙ Change PIN</button>
@@ -352,21 +752,20 @@ footer{margin-top:48px;padding-top:22px;border-top:1px solid var(--border);font-
 <script>
 /* ── CONFIG ─────────────────────────────────────────────────────────────────
    Default PIN is "1234". Change it via ⚙ Change PIN in the footer.
-   The new hash is stored in localStorage so no file edit is needed.
-   To bake a new default into the file, replace DEFAULT_HASH with the
-   SHA-256 of your chosen PIN:  echo -n 'yourpin' | shasum -a 256
+   To bake a new default: replace DEFAULT_HASH with sha256 of your PIN.
+   Terminal: echo -n 'yourpin' | shasum -a 256
 ──────────────────────────────────────────────────────────────────────────── */
 const DEFAULT_HASH = '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4';
-const K = { store:'nc-track-v1', auth:'nc-auth-v1', pin:'nc-pin-v1' };
+const K = { store:'nc-track-v2', auth:'nc-auth-v1', pin:'nc-pin-v1' };
 
-// ── UTILS ────────────────────────────────────────────────────────────────────
+// ── UTILS ─────────────────────────────────────────────────────────────────────
 async function sha256(str){
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
   return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
 }
 function storedHash(){ return localStorage.getItem(K.pin) || DEFAULT_HASH; }
 
-// ── AUTH ─────────────────────────────────────────────────────────────────────
+// ── AUTH ──────────────────────────────────────────────────────────────────────
 function isAuthed(){
   try{
     const a = JSON.parse(localStorage.getItem(K.auth)||'null');
@@ -375,131 +774,145 @@ function isAuthed(){
     return true;
   }catch{ return false; }
 }
-function setAuth(remember){
-  const exp = remember ? Date.now()+7*864e5 : Date.now()+4*3600e3;
-  localStorage.setItem(K.auth, JSON.stringify({exp}));
-}
+function setAuth(rem){ localStorage.setItem(K.auth, JSON.stringify({exp: Date.now()+(rem?7*864e5:4*3600e3)})); }
 
-// ── PIN GATE ─────────────────────────────────────────────────────────────────
-const gate   = document.getElementById('gate');
-const main   = document.getElementById('main');
-const pinIn  = document.getElementById('pin-in');
-const pinErr = document.getElementById('pin-err');
+// ── PIN GATE ──────────────────────────────────────────────────────────────────
+const gate  = document.getElementById('gate');
+const main  = document.getElementById('main');
+const pinIn = document.getElementById('pin-in');
+const pinErr= document.getElementById('pin-err');
 
 async function tryUnlock(){
-  const val = pinIn.value.trim();
-  if(!val) return;
-  const h = await sha256(val);
-  if(h === storedHash()){
+  const val = pinIn.value.trim(); if(!val) return;
+  if(await sha256(val) === storedHash()){
     setAuth(document.getElementById('pin-rem').checked);
-    gate.style.display = 'none';
-    main.style.display = '';
-    pinErr.textContent = '';
-    loadState();
-    updateAll();
+    gate.style.display='none'; main.style.display='';
+    pinErr.textContent='';
+    loadState(); updateAll(); initSections();
   } else {
-    pinErr.textContent = 'incorrect pin';
-    pinIn.value = '';
+    pinErr.textContent='incorrect pin'; pinIn.value='';
     pinIn.classList.add('err-border','shake');
-    setTimeout(()=>pinIn.classList.remove('err-border','shake'), 500);
+    setTimeout(()=>pinIn.classList.remove('err-border','shake'),500);
   }
 }
 pinIn.addEventListener('keydown', e=>{ if(e.key==='Enter') tryUnlock(); });
 
 function lockNow(){
   localStorage.removeItem(K.auth);
-  main.style.display = 'none';
-  gate.style.display = '';
+  main.style.display='none'; gate.style.display='';
   pinIn.value=''; pinErr.textContent='';
-  setTimeout(()=>pinIn.focus(), 60);
+  setTimeout(()=>pinIn.focus(),60);
 }
 
 // ── CHANGE PIN ────────────────────────────────────────────────────────────────
-function showChangePin(){
-  document.getElementById('chpin-ov').classList.remove('hidden');
-  document.getElementById('cp-cur').focus();
-}
+function showChangePin(){ document.getElementById('chpin-ov').classList.remove('hidden'); document.getElementById('cp-cur').focus(); }
 function hideChangePin(){
   document.getElementById('chpin-ov').classList.add('hidden');
   ['cp-cur','cp-new','cp-cfm'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('chpin-err').textContent='';
-  document.getElementById('chpin-ok').textContent='';
+  document.getElementById('chpin-err').textContent=''; document.getElementById('chpin-ok').textContent='';
 }
 async function doChangePin(){
-  const cur = document.getElementById('cp-cur').value.trim();
-  const nw  = document.getElementById('cp-new').value.trim();
-  const cf  = document.getElementById('cp-cfm').value.trim();
-  const err = document.getElementById('chpin-err');
-  const ok  = document.getElementById('chpin-ok');
+  const cur=document.getElementById('cp-cur').value.trim(), nw=document.getElementById('cp-new').value.trim(), cf=document.getElementById('cp-cfm').value.trim();
+  const err=document.getElementById('chpin-err'), ok=document.getElementById('chpin-ok');
   err.textContent=''; ok.textContent='';
   if(!cur||!nw||!cf){ err.textContent='fill all fields'; return; }
   if(nw!==cf){ err.textContent="new pins don't match"; return; }
-  if(nw.length<4){ err.textContent='pin must be 4+ digits'; return; }
-  const curH = await sha256(cur);
-  if(curH!==storedHash()){ err.textContent='current pin is wrong'; return; }
+  if(nw.length<4){ err.textContent='min 4 digits'; return; }
+  if(await sha256(cur)!==storedHash()){ err.textContent='current pin is wrong'; return; }
   localStorage.setItem(K.pin, await sha256(nw));
-  ok.textContent='✓ pin updated';
-  setTimeout(hideChangePin, 1400);
+  ok.textContent='✓ pin updated'; setTimeout(hideChangePin,1400);
 }
-// tab through fields, Enter on last to submit
-document.getElementById('cp-cur').addEventListener('keydown', e=>{ if(e.key==='Enter') document.getElementById('cp-new').focus(); });
-document.getElementById('cp-new').addEventListener('keydown', e=>{ if(e.key==='Enter') document.getElementById('cp-cfm').focus(); });
-document.getElementById('cp-cfm').addEventListener('keydown', e=>{ if(e.key==='Enter') doChangePin(); });
+document.getElementById('cp-cur').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('cp-new').focus();});
+document.getElementById('cp-new').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('cp-cfm').focus();});
+document.getElementById('cp-cfm').addEventListener('keydown',e=>{if(e.key==='Enter')doChangePin();});
 
 // ── PERSISTENCE ───────────────────────────────────────────────────────────────
 const allBoxes = Array.from(document.querySelectorAll('.task input[type=checkbox]'));
-
 function saveState(){
-  const s={};
-  allBoxes.forEach((cb,i)=>{ if(cb.checked) s[i]=1; });
+  const s={}; allBoxes.forEach((cb,i)=>{ if(cb.checked) s[i]=1; });
   localStorage.setItem(K.store, JSON.stringify(s));
 }
 function loadState(){
-  try{
-    const data = JSON.parse(localStorage.getItem(K.store)||'{}');
-    allBoxes.forEach((cb,i)=>{ cb.checked=!!data[i]; });
-  }catch{}
+  try{ const d=JSON.parse(localStorage.getItem(K.store)||'{}'); allBoxes.forEach((cb,i)=>{ cb.checked=!!d[i]; }); }catch{}
 }
 allBoxes.forEach(cb=>cb.addEventListener('change',()=>{ saveState(); updateAll(); }));
 
 // ── PROGRESS ──────────────────────────────────────────────────────────────────
 const courseBoxes = allBoxes.filter(cb=>cb.closest('.task.course'));
-const cfill = document.getElementById('cfill');
-const clbl  = document.getElementById('clbl');
 const phases = Array.from(document.querySelectorAll('[data-phase]'));
 
 function updateAll(){
-  // overall courses
-  const total = courseBoxes.length;
-  const done  = courseBoxes.filter(cb=>cb.checked).length;
-  cfill.style.width = (total ? done/total*100 : 0)+'%';
-  clbl.textContent  = (done===total&&total)
-    ? `All ${total} courses done. 🎉`
-    : `${done} / ${total} courses done`;
+  // overall course bar
+  const total=courseBoxes.length, done=courseBoxes.filter(cb=>cb.checked).length;
+  document.getElementById('cfill').style.width=(total?done/total*100:0)+'%';
+  document.getElementById('clbl').textContent=(done===total&&total)?`All ${total} courses done. 🎉`:`${done} / ${total} courses done`;
 
-  // per-phase task progress
+  // per-phase bars + collapsed header summaries
   phases.forEach(ph=>{
-    const boxes  = Array.from(ph.querySelectorAll('.task input[type=checkbox]'));
-    const phDone = boxes.filter(cb=>cb.checked).length;
-    const fill   = ph.querySelector('.ph-fill');
-    const lbl    = ph.querySelector('.ph-lbl');
-    if(!fill||!lbl) return;
-    fill.style.width = (boxes.length ? phDone/boxes.length*100 : 0)+'%';
-    lbl.textContent  = (phDone===boxes.length&&boxes.length)
-      ? `${boxes.length} / ${boxes.length} — complete ✓`
-      : `${phDone} / ${boxes.length} tasks`;
+    const boxes=Array.from(ph.querySelectorAll('.task input[type=checkbox]'));
+    const phDone=boxes.filter(cb=>cb.checked).length;
+    const fill=ph.querySelector('.ph-fill'), lbl=ph.querySelector('.ph-lbl');
+    if(fill) fill.style.width=(boxes.length?phDone/boxes.length*100:0)+'%';
+    if(lbl)  lbl.textContent=(phDone===boxes.length&&boxes.length)?`${boxes.length} / ${boxes.length} — complete ✓`:`${phDone} / ${boxes.length} tasks`;
+
+    // update collapsed header summary
+    const secId = ph.dataset.phase;
+    const smEl  = document.getElementById(`sm-${secId}`);
+    if(smEl) smEl.textContent = `${phDone}/${boxes.length}`;
+  });
+}
+
+// ── DATE-AWARE PHASE SECTIONS ─────────────────────────────────────────────────
+const PHASE_DATES = {
+  runway:   ['2026-06-22','2026-07-05'],
+  throttle: ['2026-07-06','2026-07-31'],
+  phase2:   ['2026-08-01','2026-10-31'],
+  phase3:   ['2026-11-01','2027-01-15'],
+  phase4:   ['2027-01-16','2027-02-28'],
+};
+
+function phaseStatus(id){
+  const [s,e] = PHASE_DATES[id];
+  const t=new Date(); t.setHours(0,0,0,0);
+  const start=new Date(s), end=new Date(e);
+  if(t>end) return 'done';
+  if(t>=start) return 'active';
+  return 'upcoming';
+}
+
+function currentSec(){
+  const order=['runway','throttle','phase2','phase3','phase4'];
+  for(const id of order){ if(phaseStatus(id)==='active') return id; }
+  const t=new Date(); t.setHours(0,0,0,0);
+  return t<new Date(PHASE_DATES.runway[0]) ? 'runway' : 'phase4';
+}
+
+function toggleSec(id){
+  const sec=document.querySelector(`[data-sec="${id}"]`);
+  sec.classList.toggle('open');
+}
+
+function initSections(){
+  const active=currentSec();
+  document.querySelectorAll('.phase-sec').forEach(sec=>{
+    const id=sec.dataset.sec;
+    const status=phaseStatus(id);
+    // status badge
+    const stEl=document.getElementById(`st-${id}`);
+    if(stEl){ stEl.textContent=status.toUpperCase(); stEl.className=`pstt ${status}`; }
+    // auto-expand current, collapse rest
+    if(id===active) sec.classList.add('open');
+    else sec.classList.remove('open');
   });
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
 (function init(){
   if(isAuthed()){
-    gate.style.display='none';
-    main.style.display='';
-    loadState();
-    updateAll();
+    gate.style.display='none'; main.style.display='';
+    loadState(); updateAll(); initSections();
   } else {
-    setTimeout(()=>pinIn.focus(), 60);
+    setTimeout(()=>pinIn.focus(),60);
   }
 })();
 </script>
