@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NeetCode Track</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FBFBFA;--text:#37352F;--text-2:#605C54;--text-3:#9B9A93;
+  --border:#ECEBE8;--border-2:#DDDCD7;
+  --accent:#2D6A4F;--accent-soft:#EAF2EE;
+  --lec:#8A857B;--lec-soft:#F1F0ED;
+  --red:#C0392B;
+  --f:'Hanken Grotesk',-apple-system,sans-serif;
+  --m:'JetBrains Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--f);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;}
+.page{max-width:760px;margin:0 auto;padding:60px 26px 130px;animation:fade .45s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+a{color:var(--accent);}
+
+.icon{font-size:40px;line-height:1;margin-bottom:14px;}
+h1{font-size:36px;font-weight:700;letter-spacing:-.02em;line-height:1.15;margin:0 0 10px;}
+.subtitle{font-size:17px;color:var(--text-2);margin:0 0 14px;max-width:62ch;}
+.meta{font-family:var(--m);font-size:12.5px;color:var(--text-3);display:flex;flex-wrap:wrap;gap:6px 14px;}
+
+h2{font-size:23px;font-weight:600;letter-spacing:-.01em;margin:48px 0 4px;display:flex;align-items:baseline;gap:10px;}
+h2 .num{font-family:var(--m);font-size:14px;color:var(--accent);font-weight:500;flex:0 0 auto;}
+.win{font-family:var(--m);font-size:12px;color:var(--text-3);margin:0 0 14px;}
+p{margin:0 0 12px;}
+hr{border:none;border-top:1px solid var(--border);margin:40px 0;}
+
+.blk{margin:0 0 6px;padding:9px 0 9px 14px;border-left:2px solid var(--border);}
+.blk.now{border-left-color:var(--accent);}
+.blk.lec{border-left-color:var(--lec);background:linear-gradient(90deg,var(--lec-soft),transparent 60%);}
+.blk.app{border-left-color:var(--accent);background:linear-gradient(90deg,var(--accent-soft),transparent 60%);}
+.dlabel{font-weight:600;font-size:15px;margin-bottom:5px;display:flex;align-items:center;gap:9px;flex-wrap:wrap;}
+.dlabel .dm{font-family:var(--m);font-size:11px;color:var(--text-3);letter-spacing:.05em;font-weight:500;}
+.wtag{font-family:var(--m);font-size:10px;text-transform:uppercase;letter-spacing:.06em;padding:2px 8px;border-radius:5px;font-weight:500;}
+.wtag.lec{background:var(--lec);color:#fff;}
+.wtag.app{background:var(--accent);color:#fff;}
+
+.task{display:flex;gap:10px;align-items:flex-start;cursor:pointer;padding:3px 0;font-size:14.5px;line-height:1.5;color:var(--text);}
+.task input{position:absolute;opacity:0;width:0;height:0;}
+.task .cb{flex:0 0 auto;width:16px;height:16px;margin-top:2px;border:1.5px solid var(--border-2);border-radius:4px;background:#fff;position:relative;transition:.12s;}
+.task input:checked+.cb{background:var(--accent);border-color:var(--accent);}
+.task input:checked+.cb::after{content:"";position:absolute;left:4.5px;top:1px;width:4px;height:8px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(43deg);}
+.task input:focus-visible+.cb{outline:2px solid var(--accent);outline-offset:2px;}
+.task input:checked~.tx{color:var(--text-3);text-decoration:line-through;}
+.task .tx b{font-weight:600;}
+.course-tag{font-family:var(--m);font-size:10px;color:#fff;background:var(--accent);border-radius:4px;padding:1px 6px;margin-left:7px;letter-spacing:.03em;white-space:nowrap;}
+
+.ship{font-family:var(--m);font-size:13px;color:var(--accent);margin:11px 0 4px;display:flex;gap:8px;align-items:baseline;}
+.ship .x{flex:0 0 auto;}
+
+/* overall progress */
+.prog{margin:8px 0 20px;}
+.prog .bar{height:6px;background:var(--border);border-radius:100px;overflow:hidden;}
+.prog .fill{height:100%;width:0;background:var(--accent);transition:width .3s ease;}
+.prog .lbl{font-family:var(--m);font-size:11.5px;color:var(--text-3);margin-top:7px;}
+
+/* per-phase progress */
+.ph-prog{margin:0 0 18px;}
+.ph-prog .bar{height:4px;background:var(--border);border-radius:100px;overflow:hidden;}
+.ph-prog .fill{height:100%;width:0;background:var(--accent);transition:width .3s ease;}
+.ph-prog .lbl{font-family:var(--m);font-size:11px;color:var(--text-3);margin-top:5px;}
+
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top;}
+th{font-family:var(--m);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3);font-weight:500;}
+td .pm{font-family:var(--m);font-size:12px;color:var(--text-3);}td b{font-weight:600;}
+tr.now td{background:var(--accent-soft);}
+
+footer{margin-top:48px;padding-top:22px;border-top:1px solid var(--border);font-family:var(--m);font-size:12px;color:var(--text-3);line-height:1.7;}
+.ftr-btns{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;}
+.ftr-btn{font-family:var(--m);font-size:11.5px;color:var(--text-3);background:none;border:1px solid var(--border);border-radius:6px;padding:5px 13px;cursor:pointer;transition:.12s;}
+.ftr-btn:hover{border-color:var(--border-2);color:var(--text-2);}
+
+/* ── PIN GATE ─────────────────────────────────── */
+#gate{position:fixed;inset:0;z-index:9000;background:var(--bg);display:flex;align-items:center;justify-content:center;}
+#gate-box{width:100%;max-width:280px;text-align:center;padding:0 24px;}
+.gate-icon{font-size:38px;margin-bottom:12px;}
+.gate-title{font-size:22px;font-weight:700;letter-spacing:-.02em;margin-bottom:4px;}
+.gate-sub{font-family:var(--m);font-size:12px;color:var(--text-3);margin-bottom:28px;letter-spacing:.03em;}
+#pin-in{width:100%;padding:13px 16px;border:1.5px solid var(--border-2);border-radius:10px;font-family:var(--m);font-size:24px;letter-spacing:.25em;text-align:center;color:var(--text);background:#fff;outline:none;transition:border-color .15s;}
+#pin-in:focus{border-color:var(--accent);}
+#pin-in.err-border{border-color:var(--red);}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+.shake{animation:shake .4s ease;}
+#pin-err{font-family:var(--m);font-size:11.5px;color:var(--red);min-height:20px;margin:8px 0 8px;letter-spacing:.02em;}
+.rem-label{display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;font-family:var(--m);font-size:12px;color:var(--text-3);user-select:none;}
+.rem-label input{cursor:pointer;accent-color:var(--accent);}
+
+/* ── CHANGE PIN MODAL ─────────────────────────── */
+#chpin-ov{position:fixed;inset:0;z-index:8000;background:rgba(251,251,250,.9);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;}
+#chpin-ov.hidden{display:none;}
+#chpin-box{background:#fff;border:1px solid var(--border-2);border-radius:14px;padding:28px 26px;width:100%;max-width:290px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,.07);}
+#chpin-box h3{margin:0 0 4px;font-size:18px;font-weight:600;}
+#chpin-box .csub{font-family:var(--m);font-size:11px;color:var(--text-3);margin:0 0 20px;}
+.chpin-inp{width:100%;padding:10px 14px;margin-bottom:10px;border:1.5px solid var(--border-2);border-radius:8px;font-family:var(--m);font-size:16px;letter-spacing:.15em;text-align:center;outline:none;transition:border-color .15s;background:#fff;color:var(--text);}
+.chpin-inp:focus{border-color:var(--accent);}
+.chpin-row{display:flex;gap:8px;margin-top:4px;}
+.btn-save{flex:1;padding:10px;border:none;border-radius:8px;background:var(--accent);color:#fff;font-family:var(--m);font-size:13px;cursor:pointer;transition:opacity .12s;}
+.btn-save:hover{opacity:.88;}
+.btn-cancel{flex:0 0 auto;padding:10px 14px;border:1px solid var(--border-2);border-radius:8px;background:none;color:var(--text-2);font-family:var(--m);font-size:13px;cursor:pointer;}
+#chpin-err{font-family:var(--m);font-size:11.5px;color:var(--red);min-height:18px;margin-top:8px;}
+#chpin-ok{font-family:var(--m);font-size:11.5px;color:var(--accent);min-height:18px;margin-top:4px;}
+
+@media(max-width:620px){.page{padding:40px 20px 90px;}h1{font-size:30px;}.meta{font-size:11.5px;}}
+@media print{body{background:#fff;}tr.now td,.blk.lec,.blk.app{background:#f4f4f2;}.blk{break-inside:avoid;}#gate,#chpin-ov,.ph-prog,.ftr-btns{display:none!important;}.page{display:block!important;}}
+</style>
+</head>
+<body>
+
+<!-- ══ PIN GATE ══════════════════════════════════════════════════════════════ -->
+<div id="gate">
+  <div id="gate-box">
+    <div class="gate-icon">💻</div>
+    <div class="gate-title">NeetCode Track</div>
+    <div class="gate-sub">enter pin to continue</div>
+    <input type="password" id="pin-in" maxlength="8" inputmode="numeric" autocomplete="off" placeholder="••••">
+    <div id="pin-err"></div>
+    <label class="rem-label"><input type="checkbox" id="pin-rem"> Stay unlocked for 7 days</label>
+  </div>
+</div>
+
+<!-- ══ CHANGE PIN MODAL ══════════════════════════════════════════════════════ -->
+<div id="chpin-ov" class="hidden">
+  <div id="chpin-box">
+    <h3>Change PIN</h3>
+    <p class="csub">minimum 4 digits</p>
+    <input class="chpin-inp" type="password" id="cp-cur" inputmode="numeric" maxlength="8" placeholder="current pin" autocomplete="off">
+    <input class="chpin-inp" type="password" id="cp-new" inputmode="numeric" maxlength="8" placeholder="new pin" autocomplete="off">
+    <input class="chpin-inp" type="password" id="cp-cfm" inputmode="numeric" maxlength="8" placeholder="confirm new pin" autocomplete="off">
+    <div id="chpin-err"></div>
+    <div class="chpin-row">
+      <button class="btn-cancel" onclick="hideChangePin()">Cancel</button>
+      <button class="btn-save" onclick="doChangePin()">Save PIN</button>
+    </div>
+    <div id="chpin-ok"></div>
+  </div>
+</div>
+
+<!-- ══ MAIN ══════════════════════════════════════════════════════════════════ -->
+<div class="page" id="main" style="display:none">
+
+  <div class="icon">💻</div>
+  <h1>NeetCode Track — Execution Plan</h1>
+  <p class="subtitle">Speed-run Python + SQL before the job. Then alternate: one week of lectures, one week of application — across all 11 courses + NeetCode 150.</p>
+  <div class="meta">
+    <span>START · JUN 22</span><span>·</span>
+    <span>11 COURSES</span><span>·</span>
+    <span>SQL-HEAVY JOB · JUL 6</span><span>·</span>
+    <span>DONE ~EARLY 2027</span>
+  </div>
+
+  <!-- RHYTHM -->
+  <h2><span class="num">→</span> The rhythm</h2>
+  <div class="blk">
+    <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx"><b>Runway (Jun 22–Jul 5):</b> full days — speed-run Python + SQL so you start the job with both fresh.</span></label>
+    <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx"><b>July:</b> throttle while you onboard — light course + start NeetCode 150.</span></label>
+    <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx"><b>August onward:</b> alternate — one <b>LECTURE</b> week (watch the course chunk), one <b>APPLICATION</b> week (NC150 problems + build / tools).</span></label>
+    <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx"><b>Rule:</b> code everything yourself first — ask AI to explain, never to write the answer.</span></label>
+  </div>
+  <p class="win" style="margin-top:8px;">~10–12 hrs/week once the job starts. Dates flex; SQL gets reinforced daily at work.</p>
+
+  <!-- OVERVIEW -->
+  <h2><span class="num">≡</span> Phases &amp; progress</h2>
+  <div class="prog">
+    <div class="bar"><div class="fill" id="cfill"></div></div>
+    <div class="lbl" id="clbl">0 / 11 courses done</div>
+  </div>
+  <table>
+    <thead><tr><th>Phase</th><th>Window</th><th>Ship</th></tr></thead>
+    <tbody>
+      <tr class="now"><td><b>1 · Speed-run Python + SQL</b></td><td><span class="pm">Jun 22 – Jul 5</span></td><td>A Python+SQL tool</td></tr>
+      <tr><td><b>· July throttle</b></td><td><span class="pm">Jul 6 – 31</span></td><td>Coding-interview Python + NC150 begun</td></tr>
+      <tr><td><b>2 · Algorithms (lec/app)</b></td><td><span class="pm">Aug – Oct</span></td><td>Full NC150 done</td></tr>
+      <tr><td><b>3 · Systems &amp; design (lec/app)</b></td><td><span class="pm">Nov – early Jan</span></td><td>SD + OOD ready</td></tr>
+      <tr><td><b>4 · Build &amp; ship (lec/app)</b></td><td><span class="pm">Jan – Feb</span></td><td>A deployed app</td></tr>
+    </tbody>
+  </table>
+
+  <hr>
+
+  <!-- ── PHASE 1: RUNWAY ───────────────────────────────────────────────────── -->
+  <h2 id="p1"><span class="num">01</span> Speed-run Python + SQL</h2>
+  <p class="win">Jun 22 – Jul 5 · pre-job runway, full days · ~4–5 hrs/day · all AI-free</p>
+  <div data-phase="runway">
+    <div class="ph-prog"><div class="bar"><div class="fill ph-fill"></div></div><div class="lbl ph-lbl"></div></div>
+
+    <div class="dlabel" style="font-family:var(--m);font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-3);margin:4px 0 8px;">Week 1 · Python (move fast — you're rusty, not new)</div>
+    <div class="blk now"><div class="dlabel"><span class="dm">JUN 22 · MON</span></div>
+      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Install Python + editor; make a NeetCode account</span></label>
+      <label class="task course"><input type="checkbox"><span class="cb"></span><span class="tx">Python for Beginners: basics → conditionals, loops<span class="course-tag">COURSE 1/11</span></span></label></div>
+    <div class="blk"><div class="dlabel"><span class="dm">JUN 23 · TUE</span></div>
+      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Python for Beginners: lists, dicts, sets, functions, comprehensions — finish</span></label></div>
+    <div class="blk"><div class="dlabel"><span class="dm">JUN 24 · WED</span></div>
+      <label class="task course"><input type="checkbox"><span class="cb"></span><span class="tx">Python OOP: classes, objects, methods, inheritance<span class="course-tag">COURSE 2/11</span></span></label></div>
+    <div class="blk"><div class="dlabel"><span class="dm">JUN 25 · THU</span></div>
+      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Python OOP: polymorphism, dunder methods, properties — finish</span></label></div>
+    <div class="blk"><div class="dlabel"><span class="dm">JUN 26 · FRI</span></div>
+      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Consolidate: build a small multi-file Python program (no AI)</span></label></div>
+    <div class="blk"><div class="dlabel"><span class="dm">JUN 27–28 · WKND</span></div>
+      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Catch up / rest</span></label></div>
+
+    <div class="dlabel" style="font-family:var(--m);font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-3);margin:24px 0 8px;">Week 2 · SQL → ship a Python+SQL tool</div>
+    <div class="blk"><div class="dlabel"><span class="dm">JUN 29 · MON</span></div>
+      <label class="task course"><input type="checkbox"><span class="cb"></span><span class="tx">SQL for Beginners: SELECT, WHERE, ORDER BY<span class="course-tag">COURSE 3/11</span></span></label></div>
+    <div class="blk"><div class="dlabel"><span class="dm">JUN 30 · TUE</span></div>
+      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">SQL for Beginners: JOINs, GROUP BY, aggregations</span></label></div>
+    <div class="blk"><div class="dlabel"><span class="dm">JUL 01 · WED</span></div>
+      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">SQL for Beginners: subqueries, indexes — finish</span></label></div>
+    <div class="blk"><div class="dlabel"><span class="dm">JUL 02 · THU</span></div>
+      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Build day 1: load your spending CSV into a database, query it from Python, print summaries</span></label></div>
+    <div class="blk"><div class="dlabel"><span class="dm">JUL 03 · FRI</span></div>
+      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Build day 2: finish features + README</span></label></div>
+    <div class="blk"><div class="dlabel"><span class="dm">JUL 04 · SAT</span></div>
+      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Push to GitHub; ship</span></label></div>
+    <div class="blk"><div class="dlabel"><span class="dm">JUL 05 · SUN</span></div>
+      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Litmus: a few SQL queries + a Python class from memory. Rest before day one.</span></label></div>
+    <div class="ship"><span class="x">✅</span><span><b>Ship —</b> a Python + SQL tool on GitHub. Courses 1–3 done; you start the job with SQL fresh.</span></div>
+  </div>
+
+  <!-- ── JULY THROTTLE ─────────────────────────────────────────────────────── -->
+  <h2><span class="num">··</span> July throttle</h2>
+  <p class="win">Jul 6 – 31 · onboarding is priority · ~3–4 hrs/week</p>
+  <div data-phase="throttle">
+    <div class="ph-prog"><div class="bar"><div class="fill ph-fill"></div></div><div class="lbl ph-lbl"></div></div>
+    <div class="blk"><div class="dlabel"><span class="dm">WEEK OF JUL 6</span></div>
+      <label class="task course"><input type="checkbox"><span class="cb"></span><span class="tx">Start Python for Coding Interviews (~30 min/eve)<span class="course-tag">COURSE 4/11</span></span></label>
+      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">NC150: Arrays &amp; Hashing — 3 problems</span></label></div>
+    <div class="blk"><div class="dlabel"><span class="dm">WEEK OF JUL 13</span></div>
+      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Finish Python for Coding Interviews</span></label>
+      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">NC150: Two Pointers — 3 problems</span></label></div>
+    <div class="blk"><div class="dlabel"><span class="dm">WEEK OF JUL 20–31</span></div>
+      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">A few more NC150 easy; settle into the job. No pressure.</span></label></div>
+    <div class="ship"><span class="x">✅</span><span><b>Ship —</b> Course 4 done; NC150 underway.</span></div>
+  </div>
+
+  <!-- ── PHASE 2: ALGORITHMS ───────────────────────────────────────────────── -->
+  <h2><span class="num">02</span> Algorithms · lecture / application</h2>
+  <p class="win">Aug – Oct · 12 weeks · Courses: DSA for Beginners (25h) + Advanced Algorithms (25h)</p>
+  <div data-phase="phase2">
+    <div class="ph-prog"><div class="bar"><div class="fill ph-fill"></div></div><div class="lbl ph-lbl"></div></div>
+
+    <div class="blk lec"><div class="dlabel"><span class="dm">WK 1</span><span class="wtag lec">Lecture</span></div>
+      <label class="task course"><input type="checkbox"><span class="cb"></span><span class="tx">DSA Beginners: Arrays/Hashing, Two Pointers, Sliding Window, Stack<span class="course-tag">COURSE 5/11</span></span></label></div>
+    <div class="blk app"><div class="dlabel"><span class="dm">WK 2</span><span class="wtag app">Apply</span></div>
+      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">NC150: arrays/hashing, two pointers, sliding window, stack</span></label>
+      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Sat: a small tool/script using what you learned</span></label></div>
+
+    <div class="blk lec"><div class="dlabel"><span class="dm">WK 3</span><span class="wtag lec">Lecture</span></div>
+      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">DSA Beginners: Binary Search, Linked Lists, Trees</span></label></div>
+    <div class="blk app"><div class="dlabel"><span class="dm">WK 4</span><span class="wtag app">Apply</span></div>
+      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">NC150: binary search, linked list, trees</span></label></div>
+
+    <div class="blk lec"><div class="dlabel"><span class="dm">WK 5</span><span class="wtag lec">Lecture</span></div>
+      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">DSA Beginners: Recursion, Backtracking, Heap, Tries — finish<span class="course-tag">COURSE 5 done</span></span></label></div>
+    <div class="blk app"><div class="dlabel"><span class="dm">WK 6</span><span class="wtag app">Apply</span></div>
+      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">NC150: backtracking, heap, tries; review weak spots</span></label></div>
+
+    <div class="blk lec"><div class="dlabel"><span class="dm">WK 7</span><span class="wtag lec">Lecture</span></div>
+      <label class="task course"><input type="checkbox"><span class="cb"></span><span class="tx">Advanced Algorithms: Graphs, Advanced Graphs<span class="course-tag">COURSE 6/11</span></span></label></div>
+    <div class="blk app"><div class="dlabel"><span class="dm">WK 8</span><span class="wtag app">Apply</span></div>
+      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">NC150: graphs, advanced graphs</span></label></div>
+
+    <div class="blk lec"><div class="dlabel"><span class="dm">WK 9</span><span class="wtag lec">Lecture</span></div>
+      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Advanced Algorithms: 1-D DP, 2-D DP</span></label></div>
+    <div class="blk app"><div class="dlabel"><span class="dm">WK 10</span><span class="wtag app">Apply</span></div>
+      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">NC150: 1-D DP, 2-D DP</span></label></div>
+
+    <div class="blk lec"><div class="dlabel"><span class="dm">WK 11</span><span class="wtag lec">Lecture</span></div>
+      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Advanced Algorithms: Greedy, Intervals, Math, Bit — finish<span class="course-tag">COURSE 6 done</span></span></label></div>
+    <div class="blk app"><div class="dlabel"><span class="dm">WK 12</span><span class="wtag app">Apply</span></div>
+      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">NC150: greedy, intervals, math, bit → full list done; 2–3 timed mocks</span></label></div>
+    <div class="ship"><span class="x">✅</span><span><b>Ship —</b> Courses 5–6 done; full NeetCode 150 complete.</span></div>
+  </div>
+
+  <!-- ── PHASE 3: SYSTEMS & DESIGN ────────────────────────────────────────── -->
+  <h2><span class="num">03</span> Systems &amp; design · lecture / application</h2>
+  <p class="win">Nov – early Jan · 10 weeks · the interview rounds beyond coding</p>
+  <div data-phase="phase3">
+    <div class="ph-prog"><div class="bar"><div class="fill ph-fill"></div></div><div class="lbl ph-lbl"></div></div>
+
+    <div class="blk lec"><div class="dlabel"><span class="dm">WK 1</span><span class="wtag lec">Lecture</span></div>
+      <label class="task course"><input type="checkbox"><span class="cb"></span><span class="tx">System Design for Beginners: scaling, caching, load balancing, CDNs<span class="course-tag">COURSE 7/11</span></span></label></div>
+    <div class="blk app"><div class="dlabel"><span class="dm">WK 2</span><span class="wtag app">Apply</span></div>
+      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Sketch each pattern + tradeoffs; relate them to systems you touch at work</span></label></div>
+
+    <div class="blk lec"><div class="dlabel"><span class="dm">WK 3</span><span class="wtag lec">Lecture</span></div>
+      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">System Design for Beginners: databases, replication, sharding — finish<span class="course-tag">COURSE 7 done</span></span></label>
+      <label class="task course"><input type="checkbox"><span class="cb"></span><span class="tx">Start System Design Interview<span class="course-tag">COURSE 8/11</span></span></label></div>
+    <div class="blk app"><div class="dlabel"><span class="dm">WK 4</span><span class="wtag app">Apply</span></div>
+      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Work 2–3 SD interview questions (URL shortener, rate limiter)</span></label></div>
+
+    <div class="blk lec"><div class="dlabel"><span class="dm">WK 5</span><span class="wtag lec">Lecture</span></div>
+      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">System Design Interview: finish (Twitter, news feed, etc.)<span class="course-tag">COURSE 8 done</span></span></label></div>
+    <div class="blk app"><div class="dlabel"><span class="dm">WK 6</span><span class="wtag app">Apply</span></div>
+      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">2–3 full mock designs, end to end (whiteboard or doc)</span></label></div>
+
+    <div class="blk lec"><div class="dlabel"><span class="dm">WK 7</span><span class="wtag lec">Lecture</span></div>
+      <label class="task course"><input type="checkbox"><span class="cb"></span><span class="tx">Object Oriented Design Interviews (LLD)<span class="course-tag">COURSE 9/11</span></span></label></div>
+    <div class="blk app"><div class="dlabel"><span class="dm">WK 8</span><span class="wtag app">Apply</span></div>
+      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Implement 2 LLD problems in code (parking lot, elevator, etc.)</span></label></div>
+
+    <div class="blk lec"><div class="dlabel"><span class="dm">WK 9</span><span class="wtag lec">Lecture</span></div>
+      <label class="task course"><input type="checkbox"><span class="cb"></span><span class="tx">Object Oriented Design Patterns<span class="course-tag">COURSE 10/11</span></span></label></div>
+    <div class="blk app"><div class="dlabel"><span class="dm">WK 10</span><span class="wtag app">Apply</span></div>
+      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Implement 4–5 patterns in code (factory, singleton, observer, strategy, adapter)</span></label></div>
+    <div class="ship"><span class="x">✅</span><span><b>Ship —</b> Courses 7–10 done; system-design + OOD interview ready.</span></div>
+  </div>
+
+  <!-- ── PHASE 4: BUILD & SHIP ─────────────────────────────────────────────── -->
+  <h2><span class="num">04</span> Build &amp; ship · lecture / application</h2>
+  <p class="win">Jan – Feb · 6 weeks · Course: Full Stack Development (20h)</p>
+  <div data-phase="phase4">
+    <div class="ph-prog"><div class="bar"><div class="fill ph-fill"></div></div><div class="lbl ph-lbl"></div></div>
+
+    <div class="blk lec"><div class="dlabel"><span class="dm">WK 1</span><span class="wtag lec">Lecture</span></div>
+      <label class="task course"><input type="checkbox"><span class="cb"></span><span class="tx">Full Stack Development: frontend, components, routing<span class="course-tag">COURSE 11/11</span></span></label></div>
+    <div class="blk app"><div class="dlabel"><span class="dm">WK 2</span><span class="wtag app">Apply</span></div>
+      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Build your app's frontend</span></label></div>
+
+    <div class="blk lec"><div class="dlabel"><span class="dm">WK 3</span><span class="wtag lec">Lecture</span></div>
+      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Full Stack Development: backend, auth, database (uses your SQL)</span></label></div>
+    <div class="blk app"><div class="dlabel"><span class="dm">WK 4</span><span class="wtag app">Apply</span></div>
+      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Build the backend + wire the database</span></label></div>
+
+    <div class="blk lec"><div class="dlabel"><span class="dm">WK 5</span><span class="wtag lec">Lecture</span></div>
+      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Full Stack Development: deployment — finish<span class="course-tag">COURSE 11 done</span></span></label></div>
+    <div class="blk app"><div class="dlabel"><span class="dm">WK 6</span><span class="wtag app">Apply</span></div>
+      <label class="task"><input type="checkbox"><span class="cb"></span><span class="tx">Deploy + polish + README; clean up GitHub; 2 mock interviews</span></label></div>
+    <div class="ship"><span class="x">✅</span><span><b>Ship —</b> Course 11 done; a deployed full-stack app. Interview-ready.</span></div>
+  </div>
+
+  <footer>
+    All 11 courses come with one NeetCode Pro subscription. &nbsp;·&nbsp; Lecture weeks consume; application weeks produce. &nbsp;·&nbsp; Progress is saved in this browser.
+    <div class="ftr-btns">
+      <button class="ftr-btn" onclick="lockNow()">🔒 Lock</button>
+      <button class="ftr-btn" onclick="showChangePin()">⚙ Change PIN</button>
+    </div>
+  </footer>
+
+</div><!-- /main -->
+
+<script>
+/* ── CONFIG ─────────────────────────────────────────────────────────────────
+   Default PIN is "1234". Change it via ⚙ Change PIN in the footer.
+   The new hash is stored in localStorage so no file edit is needed.
+   To bake a new default into the file, replace DEFAULT_HASH with the
+   SHA-256 of your chosen PIN:  echo -n 'yourpin' | shasum -a 256
+──────────────────────────────────────────────────────────────────────────── */
+const DEFAULT_HASH = '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4';
+const K = { store:'nc-track-v1', auth:'nc-auth-v1', pin:'nc-pin-v1' };
+
+// ── UTILS ────────────────────────────────────────────────────────────────────
+async function sha256(str){
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+function storedHash(){ return localStorage.getItem(K.pin) || DEFAULT_HASH; }
+
+// ── AUTH ─────────────────────────────────────────────────────────────────────
+function isAuthed(){
+  try{
+    const a = JSON.parse(localStorage.getItem(K.auth)||'null');
+    if(!a) return false;
+    if(Date.now()>a.exp){ localStorage.removeItem(K.auth); return false; }
+    return true;
+  }catch{ return false; }
+}
+function setAuth(remember){
+  const exp = remember ? Date.now()+7*864e5 : Date.now()+4*3600e3;
+  localStorage.setItem(K.auth, JSON.stringify({exp}));
+}
+
+// ── PIN GATE ─────────────────────────────────────────────────────────────────
+const gate   = document.getElementById('gate');
+const main   = document.getElementById('main');
+const pinIn  = document.getElementById('pin-in');
+const pinErr = document.getElementById('pin-err');
+
+async function tryUnlock(){
+  const val = pinIn.value.trim();
+  if(!val) return;
+  const h = await sha256(val);
+  if(h === storedHash()){
+    setAuth(document.getElementById('pin-rem').checked);
+    gate.style.display = 'none';
+    main.style.display = '';
+    pinErr.textContent = '';
+    loadState();
+    updateAll();
+  } else {
+    pinErr.textContent = 'incorrect pin';
+    pinIn.value = '';
+    pinIn.classList.add('err-border','shake');
+    setTimeout(()=>pinIn.classList.remove('err-border','shake'), 500);
+  }
+}
+pinIn.addEventListener('keydown', e=>{ if(e.key==='Enter') tryUnlock(); });
+
+function lockNow(){
+  localStorage.removeItem(K.auth);
+  main.style.display = 'none';
+  gate.style.display = '';
+  pinIn.value=''; pinErr.textContent='';
+  setTimeout(()=>pinIn.focus(), 60);
+}
+
+// ── CHANGE PIN ────────────────────────────────────────────────────────────────
+function showChangePin(){
+  document.getElementById('chpin-ov').classList.remove('hidden');
+  document.getElementById('cp-cur').focus();
+}
+function hideChangePin(){
+  document.getElementById('chpin-ov').classList.add('hidden');
+  ['cp-cur','cp-new','cp-cfm'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('chpin-err').textContent='';
+  document.getElementById('chpin-ok').textContent='';
+}
+async function doChangePin(){
+  const cur = document.getElementById('cp-cur').value.trim();
+  const nw  = document.getElementById('cp-new').value.trim();
+  const cf  = document.getElementById('cp-cfm').value.trim();
+  const err = document.getElementById('chpin-err');
+  const ok  = document.getElementById('chpin-ok');
+  err.textContent=''; ok.textContent='';
+  if(!cur||!nw||!cf){ err.textContent='fill all fields'; return; }
+  if(nw!==cf){ err.textContent="new pins don't match"; return; }
+  if(nw.length<4){ err.textContent='pin must be 4+ digits'; return; }
+  const curH = await sha256(cur);
+  if(curH!==storedHash()){ err.textContent='current pin is wrong'; return; }
+  localStorage.setItem(K.pin, await sha256(nw));
+  ok.textContent='✓ pin updated';
+  setTimeout(hideChangePin, 1400);
+}
+// tab through fields, Enter on last to submit
+document.getElementById('cp-cur').addEventListener('keydown', e=>{ if(e.key==='Enter') document.getElementById('cp-new').focus(); });
+document.getElementById('cp-new').addEventListener('keydown', e=>{ if(e.key==='Enter') document.getElementById('cp-cfm').focus(); });
+document.getElementById('cp-cfm').addEventListener('keydown', e=>{ if(e.key==='Enter') doChangePin(); });
+
+// ── PERSISTENCE ───────────────────────────────────────────────────────────────
+const allBoxes = Array.from(document.querySelectorAll('.task input[type=checkbox]'));
+
+function saveState(){
+  const s={};
+  allBoxes.forEach((cb,i)=>{ if(cb.checked) s[i]=1; });
+  localStorage.setItem(K.store, JSON.stringify(s));
+}
+function loadState(){
+  try{
+    const data = JSON.parse(localStorage.getItem(K.store)||'{}');
+    allBoxes.forEach((cb,i)=>{ cb.checked=!!data[i]; });
+  }catch{}
+}
+allBoxes.forEach(cb=>cb.addEventListener('change',()=>{ saveState(); updateAll(); }));
+
+// ── PROGRESS ──────────────────────────────────────────────────────────────────
+const courseBoxes = allBoxes.filter(cb=>cb.closest('.task.course'));
+const cfill = document.getElementById('cfill');
+const clbl  = document.getElementById('clbl');
+const phases = Array.from(document.querySelectorAll('[data-phase]'));
+
+function updateAll(){
+  // overall courses
+  const total = courseBoxes.length;
+  const done  = courseBoxes.filter(cb=>cb.checked).length;
+  cfill.style.width = (total ? done/total*100 : 0)+'%';
+  clbl.textContent  = (done===total&&total)
+    ? `All ${total} courses done. 🎉`
+    : `${done} / ${total} courses done`;
+
+  // per-phase task progress
+  phases.forEach(ph=>{
+    const boxes  = Array.from(ph.querySelectorAll('.task input[type=checkbox]'));
+    const phDone = boxes.filter(cb=>cb.checked).length;
+    const fill   = ph.querySelector('.ph-fill');
+    const lbl    = ph.querySelector('.ph-lbl');
+    if(!fill||!lbl) return;
+    fill.style.width = (boxes.length ? phDone/boxes.length*100 : 0)+'%';
+    lbl.textContent  = (phDone===boxes.length&&boxes.length)
+      ? `${boxes.length} / ${boxes.length} — complete ✓`
+      : `${phDone} / ${boxes.length} tasks`;
+  });
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+(function init(){
+  if(isAuthed()){
+    gate.style.display='none';
+    main.style.display='';
+    loadState();
+    updateAll();
+  } else {
+    setTimeout(()=>pinIn.focus(), 60);
+  }
+})();
+</script>
+
+</body>
+</html>
